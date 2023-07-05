@@ -8,6 +8,9 @@ from modules.transaction_datetime import TransactionDateTime
 # alipay
 # 交易时间,交易分类,交易对方,对方账号,商品说明,收/支,金额,收/付款方式,交易状态,交易订单号,商家订单号,备注,
 
+# wechat
+# 交易时间,交易分类,交易对方,对方账号,商品说明,收/支,金额,收/付款方式,交易状态,交易订单号,商家订单号,备注,
+
 class Transaction:
     
     def __init__(self):
@@ -23,6 +26,7 @@ class Transaction:
         self.transaction_number = ''
         self.merchant_number = ''
         self.remark = ''
+        self.source = ''
         
     def init_by_list(self, infos: list):
         
@@ -50,6 +54,9 @@ class Transaction:
         self.merchant_number = merchant_number
         self.remark = remark
         
+    def set_source(self, source):
+        
+        self.source = source
         
     def __str__(self):
         
