@@ -15,7 +15,7 @@ from modules.inject_style import InjectStyle
 csv_folder_path = "/Users/pengliu/Code/Grandet/bills/"
 
 transaction_file_path = "/Users/pengliu/Code/Grandet/bills/all.csv"
-    
+save_transaction = False
     
 if __name__ == "__main__":
     csv_files = ReadTransactionTable.extract_csv_file_path(csv_folder_path)
@@ -48,11 +48,11 @@ if __name__ == "__main__":
     print_log("All transactions count: " + str(len(target_transactions)) + ".")
     print_log("All transactions count: " + str(len(all_transactions)) + ".")
     
-    target_transactions_list = []
-    for item in all_transactions:
-        if isinstance(item, Transaction):
-            target_transactions_list.append(item.to_list())
-            if len(item.to_list()) != 13:
-                    print(len(item.to_list()))
-            
-    WriteTransactionTable.write_csv(csv_file_path=transaction_file_path, fields=head, rows=target_transactions_list)
+    if save_transaction:
+        target_transactions_list = []
+        for item in all_transactions:
+            if isinstance(item, Transaction):
+                target_transactions_list.append(item.to_list())
+                if len(item.to_list()) != 13:
+                        print(len(item.to_list()))
+        WriteTransactionTable.write_csv(csv_file_path=transaction_file_path, fields=head, rows=target_transactions_list)
