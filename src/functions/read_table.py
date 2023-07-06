@@ -1,11 +1,14 @@
-# /bin/bash python3 read_table.py --input_file input.txt --output_file output.txt
+# /bin/bash python3
 
 import pandas as pd
 import csv
 import os
 
+from functions.log4py import print_log
+
 from modules.transaction import Transaction
 from modules.transaction import create_transaction
+from modules.inject_style import InjectStyle
 
 
 class ReadTransactionTable:
@@ -29,7 +32,7 @@ class ReadTransactionTable:
                     for item in temp_files:
                         csv_file_paths.append(os.path.join(folder_path, item))
         except Exception:
-            print("Can't open fodler:" + folder_path)
+            print_log("Can't open fodler:" + folder_path)
             return csv_file_paths
         return csv_file_paths
 
@@ -61,7 +64,28 @@ class ReadTransactionTable:
 
 
     @classmethod
-    def open_csv(self, csv_file_path: str, head=False, frist_line_word=""):
+    def read_csv_head(cls, csv_file_path: str, frist_line_word="") -> list:
+        
+        heads = []
+        with open(csv_file_path, 'r') as f:
+            reader = csv.reader(f)
+            begin = False
+            target = frist_line_word
+            for row in reader:
+                # print(row)
+                if not begin:
+                    if len(row) == 0 or target != row[0]:
+                        continue
+                    else:
+                        begin = True
+                if begin:
+                    heads = row
+                    break
+        return heads
+
+
+    @classmethod
+    def open_csv(cls, csv_file_path: str, head=False, frist_line_word="", source="alipay") -> list:
         
         transactions = []
         with open(csv_file_path, 'r') as f:
@@ -79,9 +103,12 @@ class ReadTransactionTable:
                 if not head_:
                     head_ = True
                     continue
-                # print(row)
+
                 temp = create_transaction(row)
-                transactions.append(temp)
-            print(f"Read over. Size: {str(len(transactions))} transactions.")
+                temp_transaction_with_source = InjectStyle.add_source(temp, source)
+                # temp_transaction_with_source.show()
+                transactions.append(temp_transaction_with_source)
+                
+            print_log(f"Read over. Size: {str(len(transactions))} transactions.")
         return transactions
         
