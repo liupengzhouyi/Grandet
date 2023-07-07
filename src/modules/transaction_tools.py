@@ -2,9 +2,13 @@
 
 from datetime import datetime
 
+from functools import cmp_to_key
 from functions.log4py import print_log
 from modules.transaction import Transaction
 from modules.transaction_datetime import TransactionDateTime
+from functions.log4py import print_log
+from functions.read_table import ReadTransactionTable
+from functions.write_table import WriteTransactionTable
 
 
 def check_dt1_dt2(dt1: TransactionDateTime, dt2: TransactionDateTime) -> bool:
@@ -79,3 +83,38 @@ def get_batch_transactions_target_values(transactions: list, func: callable) -> 
             else:
                 print("Error:" + str(type(value)) + ":" + str(value))
     return batch_transactions
+
+
+
+def analysis_all_bills(target_csv_files: list, csv_folder_path: str) -> list:
+    
+    all_transactions = []
+
+    for item in target_csv_files:
+        info = "Read transaction csv file: " + item
+        print_log(info)
+        file_source = str(item).replace(csv_folder_path, "").split('/')[0]
+        info = "The file source was " + file_source
+        print_log(info)
+        
+        transactions = ReadTransactionTable.open_csv(csv_file_path=item,
+                                                    head=False,
+                                                    frist_line_word='交易时间',
+                                                    source=file_source)
+        all_transactions.extend(transactions)
+    all_transactions.sort(key=cmp_to_key(cmp_transaction_by_datetime))
+    target_transactions = delete_same_transaction(all_transactions)
+    print_log("All transactions count: " + str(len(target_transactions)) + ".")
+    print_log("All transactions count: " + str(len(all_transactions)) + ".")
+    return target_transactions
+
+
+def save_transactions_to_file(all_transactions: list, transaction_file_path: str, head: list):
+    
+    target_transactions_list = []
+    for item in all_transactions:
+        if isinstance(item, Transaction):
+            target_transactions_list.append(item.to_list())
+    WriteTransactionTable.write_csv(csv_file_path=transaction_file_path,
+                                    fields=head,
+                                    rows=target_transactions_list)

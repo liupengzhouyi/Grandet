@@ -8,86 +8,35 @@ from functions.log4py import print_log
 from gui.ui.globel_varable import set_value
 from gui.ui.globel_varable import get_value
 
+from gui.ui.select_bills import chooes_bills_folder
+
 from functions.read_table import ReadTransactionTable
-
-
-def select_folder_path(bills_folder_bable: tk.Label):
-
-    folder_name = tkinter.filedialog.askdirectory()
-    print_log(f"Select bills folder: {folder_name}")
-    if folder_name != '':
-        bills_folder_bable.config(text = "您选择的文件是：" + folder_name)
-        set_value("bills_folder", folder_name)
-    else:
-        bills_folder_bable.config(text = "您没有选择任何文件夹")
-    return folder_name
-
-
-def select_bills_file_path(bills_file_list: tk.Listbox):
-    
-    folder_path = get_value("bills_folder")
-    print_log(f"Select bills file in folder {folder_path}.")
-    
-    csv_files = ReadTransactionTable.extract_csv_file_path(folder_path)
-    target_csv_files = ReadTransactionTable.flitter_csv_file(csv_files)
-    
-    set_value("bills_files", target_csv_files)
-    
-    count = bills_file_list.size() + 1
-    for index, item in enumerate(target_csv_files):
-        now_index = index + count 
-        bills_file_list.insert(now_index, f"{str(now_index)}. {item}")
-        print(f"{str(now_index)}. {item}")
-    return
-    
-
-def clear_bills_file_path(bills_file_list: tk.Listbox):
-    
-    print_log(f"Clear bills file list.")
-    
-    bills_file_list.delete(0, tk.END)
-    return
-    
-    
-def chooes_bills_folder():
-    
-    folder_path = ''
-    # 第1步，实例化object，建立窗口window
-    select_folder_window = tk.Tk()
-    # 第2步，给窗口的可视化起名字
-    select_folder_window.title('选择账单')
-    # 第3步，设定窗口的大小(长 * 宽)
-    select_folder_window.geometry('800x500')  # 这里的乘是小x
-    
-    bills_folder_bable = tk.Label(select_folder_window, text = '')
-    bills_folder_bable.pack()
-    
-    btn = tk.Button(
-        select_folder_window, text="选择账单", command=lambda : select_folder_path(bills_folder_bable=bills_folder_bable))
-    btn.pack()
-    
-    print_log(f"--- Print folder path: {folder_path}")
-    
-    # 提取账单文件
-    bills_file_list = tk.Listbox(select_folder_window, width=60, height=20)
-    bills_file_list.pack()
-    select_bills_file_btn = tk.Button(
-        select_folder_window, text="提取账单文件", command=lambda : select_bills_file_path(bills_file_list=bills_file_list))
-    select_bills_file_btn.pack()
-    clear_bills_file_btn = tk.Button(
-        select_folder_window, text="重置账单文件", command=lambda : clear_bills_file_path(bills_file_list=bills_file_list)) 
-    clear_bills_file_btn.pack()
-    
-    select_folder_window.mainloop()
+from modules.transaction_tools import analysis_all_bills
 
 
 def do_job():
     
     print("Do some job.")
     
+   
+def analysis_bills():
+    
+    bills_files = get_value("bills_files")
+    if len(bills_files) == 0:
+        print("No bills files.")
+    else:
+        print("Bills files: " + str(bills_files))
+    
+    bills_folder_path = get_value("bills_folder")
+        
+    taregt_transactions = analysis_all_bills(target_csv_files=bills_files,
+                                             csv_folder_path=bills_folder_path)
+    
+    print("Target transactions: " + str(len(taregt_transactions)))
+    
+    
     
 def run_main_windows():
-    
 
     # 第1步，实例化object，建立窗口window
     window = tk.Tk()
@@ -138,20 +87,19 @@ def run_main_windows():
     window.config(menu=menubar)
     
     # 第4步，在图形界面上设定标签
-    l = tk.Label(window, text='你好,欢迎您查看自己的账单', bg='green', font=('Arial', 12), width=30, height=2)
-    # 说明： bg为背景，font为字体，width为长，height为高，这里的长和高是字符的长和高，比如height=2,就是标签有2个字符这么高
+    # l = tk.Label(window, text='你好,欢迎您查看自己的账单', bg='green', font=('Arial', 12), width=30, height=2)
+    # # 说明： bg为背景，font为字体，width为长，height为高，这里的长和高是字符的长和高，比如height=2,就是标签有2个字符这么高
+    # l.pack()
 
-    # 第4步，在图形界面上设定输入框控件entry并放置控件
-    bills_file_path = tk.Entry(window, show=None, font=('Arial', 14))  # 显示成明文形式
-
-    btn = tk.Button(window,text="弹出选择文件对话框",command=chooes_bills_folder)
-    btn.pack()
-
-
-    l.pack()
-    bills_file_path.pack()
+    # # 第4步，在图形界面上设定输入框控件entry并放置控件
+    # bills_file_path = tk.Entry(window, show=None, font=('Arial', 14))  # 显示成明文形式
+    # bills_file_path.pack()
     
+    # btn = tk.Button(window,text="弹出选择文件对话框",command=chooes_bills_folder)
+    # btn.pack()
     
+    analysis_bills_btn = tk.Button(window,text="解析账单文件",command=analysis_bills)
+    analysis_bills_btn.pack()
     
     # 第5步，主窗口循环显示
     window.mainloop()
