@@ -35,6 +35,11 @@ class Transaction:
         return self.time_
     
     
+    def get_date_info_as_str(self) -> str:
+        
+        return self.time_.get_date_info_as_str()
+        
+    
     def get_transaction_number(self) -> str:
 
         return self.transaction_number
@@ -82,7 +87,7 @@ class Transaction:
             counterparty_number = ''
             product = infos[3]
             income_expense = infos[4]
-            amount = infos[5]
+            amount = float(str(infos[5]).replace("¥", ""))
             payment_method = infos[6]
             current_status = infos[7]
             transaction_number = infos[8]

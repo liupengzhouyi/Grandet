@@ -38,6 +38,10 @@ class TransactionDateTime:
         
         return f"{self.year}-{self.month}-{self.day} {self.hour}:{self.minute}:{self.second}"
 
+    def get_date_info_as_str(self) -> str:
+        
+         return f"{self.year}-{self.month}-{self.day}"
+        
     def show(self):
         
         print(f"Year: {self.year}")
@@ -47,4 +51,17 @@ class TransactionDateTime:
         print(f"Minute: {self.minute}")
         print(f"Second: {self.second}")
         
+    
+    def is_target_day(self, year: int, month: int, day: int) -> bool:
         
+        return self.year == year and self.month == month and self.day == day
+
+
+    def is_target_month(self, year: int, month: int) -> bool:
+        
+        return self.year == year and self.month == month
+    
+    
+    def is_target_year(self, year: int, month: int) -> bool:
+        
+        return self.year == year
