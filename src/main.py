@@ -22,8 +22,9 @@ from tools.extraction_rules import ExtrcationRules
 
 from gui.create_image.create_image import GenarationImage
 
-
 from gui.ui.main_windows import run_main_windows
+
+from tools.analysis_transactions import AnalysisTransactions
 
 
 csv_folder_path = "/Users/pengliu/Code/Grandet/bills/"
@@ -31,44 +32,10 @@ transaction_file_path = "/Users/pengliu/Code/Grandet/bills/all.csv"
 save_transaction = False
 
 
-# def analysis_all_bills(target_csv_files: list, csv_folder_path: str) -> list:
-    
-#     all_transactions = []
-
-#     for item in target_csv_files:
-#         info = "Read transaction csv file: " + item
-#         print_log(info)
-#         file_source = str(item).replace(csv_folder_path, "").split('/')[0]
-#         info = "The file source was " + file_source
-#         print_log(info)
-        
-#         transactions = ReadTransactionTable.open_csv(csv_file_path=item,
-#                                                     head=False,
-#                                                     frist_line_word='交易时间',
-#                                                     source=file_source)
-#         all_transactions.extend(transactions)
-#     all_transactions.sort(key=cmp_to_key(cmp_transaction_by_datetime))
-#     target_transactions = delete_same_transaction(all_transactions)
-#     print_log("All transactions count: " + str(len(target_transactions)) + ".")
-#     print_log("All transactions count: " + str(len(all_transactions)) + ".")
-#     return target_transactions
-
-
-# def save_transactions_to_file(all_transactions: list, transaction_file_path: str, head: list):
-    
-#     target_transactions_list = []
-#     for item in all_transactions:
-#         if isinstance(item, Transaction):
-#             target_transactions_list.append(item.to_list())
-#     WriteTransactionTable.write_csv(csv_file_path=transaction_file_path,
-#                                     fields=head,
-#                                     rows=target_transactions_list)
-
-
 if __name__ == "__main__":
     
     model = 'ui'
-    # model = 'command'
+    model = 'command'
     if model == 'ui':
         run_main_windows()
     else:
@@ -91,31 +58,32 @@ if __name__ == "__main__":
         target_transactions = analysis_all_bills(target_csv_files=target_csv_files, 
                                                  csv_folder_path=csv_folder_path)
 
+        analysis = AnalysisTransactions(transactions=target_transactions)
+        
+        print(f"Target transactions: {str(analysis.get_size())}")
+        
+        print(f"Source transactions years: {str(analysis.get_years())}")
+        
+        print(f"Source transactions months: {str(analysis.get_months(target_year=2022))}")
+        
+        print(f"Source transactions days: {str(analysis.get_days(target_year=2022, target_month=11))}")
+        
+        # date_infos = SplitTransaction.select_every_day(target_transactions, 2023, 5)
+        # data_values = []
+        # for item in date_infos:
+        #     year = int(str(item).split("-")[0])
+        #     month = int(str(item).split("-")[1])
+        #     day = int(str(item).split("-")[2])
+        #     targets = SplitTransaction.select_one_day(target_transactions, year=year, month=month, day=day)
+        #     a = get_batch_transactions_target_values(targets, ExtrcationRules.get_expense)
+        #     one_day_sum = math.fsum(a)
+        #     one_day_sum = round(one_day_sum, 2)
+        #     data_values.append(one_day_sum)
+        #     print_log(f"select {item} transaction: {str(len(targets))} olders, sun value is {str(one_day_sum)}, infos: {str(a)}") 
+        # GenarationImage.genaration_month_image(values=data_values, labels=date_infos)
+        
         if save_transaction:
             save_transactions_to_file(all_transactions=all_transactions,
                                       transaction_file_path=transaction_file_path,
                                       head=head)
-            # target_transactions_list = []
-            # for item in all_transactions:
-            #     if isinstance(item, Transaction):
-            #         target_transactions_list.append(item.to_list())
-            #         # if len(item.to_list()) != 13:
-            #         #         print(len(item.to_list()))
-            # WriteTransactionTable.write_csv(csv_file_path=transaction_file_path, fields=head, rows=target_transactions_list)
-
-        # targets = SplitTransaction.select_one_month(target_transactions, 2023, 6)
-        
-        date_infos = SplitTransaction.select_every_day(target_transactions, 2023, 5)
-        data_values = []
-        for item in date_infos:
-            year = int(str(item).split("-")[0])
-            month = int(str(item).split("-")[1])
-            day = int(str(item).split("-")[2])
-            targets = SplitTransaction.select_one_day(target_transactions, year=year, month=month, day=day)
-            a = get_batch_transactions_target_values(targets, ExtrcationRules.get_expense)
-            one_day_sum = math.fsum(a)
-            one_day_sum = round(one_day_sum, 2)
-            data_values.append(one_day_sum)
-            print_log(f"select {item} transaction: {str(len(targets))} olders, sun value is {str(one_day_sum)}, infos: {str(a)}") 
-        GenarationImage.genaration_month_image(values=data_values, labels=date_infos)
 
