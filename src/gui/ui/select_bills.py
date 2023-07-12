@@ -75,13 +75,9 @@ def analysis_bills():
     every_years_transactions = analysis.get_every_years_transactions()
     print_log("Set every years transactions.")
     set_value("every_years_transactions", every_years_transactions)
-    
     create_grandet_bills_window()
-    
-    
-    
-    
-    
+
+
 def chooes_bills_folder():
     
     folder_path = ''
@@ -108,13 +104,14 @@ def chooes_bills_folder():
     bills_file_list.pack()
     
     # bt=ttk.Button(lf1, text="处理", bootstyle=SUCCESS,command=fun)
-    btn = ttk.Button(btn_frame, text="导入账单", command=lambda : select_folder_path(bills_folder_bable=bills_folder_bable))
-    select_bills_file_btn = ttk.Button(btn_frame, text="提取账单文件", bootstyle=SUCCESS, command=lambda : select_bills_file_path(bills_file_list=bills_file_list))
-    clear_bills_file_btn = ttk.Button(btn_frame, text="重置账单文件", bootstyle=SUCCESS, command=lambda : clear_bills_file_path(bills_file_list=bills_file_list)) 
-    quit_btn = ttk.Button(btn_frame, text="分析账单", bootstyle=SUCCESS, command=lambda : analysis_bills())
-    btn.pack()
-    select_bills_file_btn.pack()
-    clear_bills_file_btn.pack()
-    quit_btn.pack()
+    btn = tk.Button(btn_frame, text="导入账单", command=lambda : select_folder_path(bills_folder_bable=bills_folder_bable))
+    select_bills_file_btn = tk.Button(btn_frame, text="提取账单文件", command=lambda : select_bills_file_path(bills_file_list=bills_file_list))
+    clear_bills_file_btn = tk.Button(btn_frame, text="重置账单文件", command=lambda : clear_bills_file_path(bills_file_list=bills_file_list)) 
+    analysis_btn = tk.Button(btn_frame, text="分析账单", command=lambda : analysis_bills())
+    
+    btn.pack(side=tk.TOP, fill=tk.X)
+    select_bills_file_btn.pack(side=tk.TOP, fill=tk.X)
+    analysis_btn.pack(side=tk.TOP, fill=tk.BOTH)
+    clear_bills_file_btn.pack(side=tk.TOP, fill=tk.BOTH)
     
     select_folder_window.mainloop()

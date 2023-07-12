@@ -5,6 +5,11 @@ import os
 import tkinter as tk  # 使用Tkinter前需要先导入
 from PIL import Image, ImageTk
 
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+
 from functions.log4py import print_log
 from gui.ui.globel_varable import set_value
 from gui.ui.globel_varable import get_value
@@ -19,7 +24,8 @@ def fill_bill_files(bill_frame: tk.Frame, file_names: list) -> tk.Frame:
     # 左侧账单文件列表
     # bill_frame = tk.Frame(root)
     # bill_frame = tk.Frame(root, width=20) # 设置列表框架宽度为窗口宽度的1/4
-    bill_frame.pack(side="left", fill="both", expand=True)
+    # bill_frame.pack(side="left", fill="both", expand=True)
+    bill_frame.pack(side="left", fill="y", expand=True)
 
     bill_header = tk.Label(bill_frame, text="📁 账单文件列表")
     bill_header.pack(side="top")
@@ -95,17 +101,41 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
     separator_for_image = tk.Frame(yearly_summary, height=2, bd=1, relief="sunken")
     separator_for_image.pack(fill="x", padx=5, pady=5)
     
-    image_frame = tk.Frame(yearly_summary)
-    image_frame.pack(side="bottom")
-    image_path = "/Users/pengliu/Code/Grandet/src/gui/ui/images.png"
+    
+    # image_frame = tk.Frame(yearly_summary)
+    # image_frame.pack(side="bottom")
+    # image_path = "/Users/pengliu/Code/Grandet/src/gui/ui/images.png"
+    # img = Image.open(image_path)
+    # img_resized = img.resize((200,200), Image.ANTIALIAS) # 调整图片大小
+    # image = ImageTk.PhotoImage(img_resized)
+    # print(f"Read image: {image_path}.")
+    # image_label = tk.Label(yearly_summary)
+    # image_label.image=image
+    # image_label.pack()
+    
+    # from PIL import Image, ImageTk
+    # import tkinter as tk
+
+    # root = tk.Tk()
+
+    # 创建框架和画布
+    # frame = tk.Frame(root)
+    # frame.pack()
+    
+    canvas = tk.Canvas(yearly_summary, width=200, height=200)
+    
+    print(f"Read image: {image_path}.")
+    # 打开图像并转换为PhotoImage对象
     img = Image.open(image_path)
     img_resized = img.resize((200,200), Image.ANTIALIAS) # 调整图片大小
-    image = ImageTk.PhotoImage(img_resized)
-    
-    image_label = tk.Label(image_frame)
-    # image_label.grid()   
-    image_label.image=image
-    image_label.pack()
+
+    photo = ImageTk.PhotoImage(img_resized, master=canvas)
+
+    # 在画布上插入图像
+    canvas.create_image(100, 100, anchor=tk.CENTER, image=photo)
+    canvas.pack()
+    # root.mainloop()
+
     return yearly_summary
     
     
@@ -117,7 +147,7 @@ def show_details(root: tk.Tk, year: str):
     details_label.pack()
 
 
-def get_data() -> list:
+def get_data() -> tuple:
         
     files = []
     years = []
@@ -151,7 +181,9 @@ def get_data() -> list:
             else:
                 continue
 
-    image_path = "./gui/ui/images.png" 
+    image_path = "/Users/pengliu/Code/Grandet/src/gui/ui/images.png" 
+    return (files, years, image_path)
+
 
 def create_grandet_bills_window():
     
@@ -159,45 +191,12 @@ def create_grandet_bills_window():
     title = "葛朗台的账单"
     # 表头
     head_words = ["年份", "花销总额", "支出交易笔数", "收入交易笔数", "个人转账交易笔数", "详情"]
-    files = []
-    years = []
-    
-    print_log(f"get every_years_transactions")
-    every_years_transactions = get_value("every_years_transactions")
-    if every_years_transactions is None:
-        print_log(f"get every_years_transactions error.")
-        # 账单文件
-        files = ["账单1", "账单2", "账单3"]
-        years = [("2020", 1000, 10, 5, 3),
-                ("2021", 2000, 15, 8, 4),
-                ("2022", 3000, 20, 10, 5)]
-    else:
-        print_log(f"get every_years_transactions success.")
-        all_files = get_value("bills_files")
-        files = []
-        for item in all_files:
-            files.append(os.path.basename(item))
-        years = []
-        for key_word in every_years_transactions.keys():
-            
-            year_transaction = every_years_transactions.get(key_word)
-            if isinstance(year_transaction, YearsTransaction):
-                year = year_transaction.year
-                summary = TransactionsTools.get_transactions_size(year_transaction)
-                expenditure_count = 100
-                income_count = 100
-                transfer_count = 100
-                
-                years.append((year, summary, expenditure_count, income_count, transfer_count))
-            else:
-                continue
+    files, years, image_path = get_data()
 
-    image_path = "./gui/ui/images.png"
-    
     root = tk.Tk()
-    # root.geometry("800x600") # 设置窗口大小
+    root.geometry("1400x720") # 设置窗口大小
     root.title(title)
-    bill_frame = tk.Frame(root, width=200) # 设置列表框架宽度为窗口宽度的1/4
+    bill_frame = tk.Frame(root, width=150) # 设置列表框架宽度为窗口宽度的1/4
     yearly_summary = tk.Frame(root, width=600)
     
     bill_frame = fill_bill_files(bill_frame=bill_frame, file_names=files)
@@ -207,5 +206,17 @@ def create_grandet_bills_window():
                                            head_words=head_words,
                                            years=years,
                                            image_path=image_path)
+
+
+    # 创建matplotlib图像并在Tkinter窗口中嵌入它
+    fig = Figure(figsize=(5, 4), dpi=100)
+    ax = fig.add_subplot(111)
+    x = np.linspace(0, 2 * np.pi, 100)
+    y = np.sin(x)
+    ax.plot(x, y)
+
+    canvas = FigureCanvasTkAgg(fig, master=yearly_summary)
+    canvas.draw()
+    canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
     root.mainloop()
