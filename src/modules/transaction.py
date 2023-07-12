@@ -11,6 +11,7 @@ from modules.transaction_datetime import TransactionDateTime
 # wechat
 # 交易时间,交易类型,交易对方,        商品,   收/支,金额(元),支付方式,   当前状态,交易单号,  商户单号,  备注
 
+
 class Transaction:
     
     def __init__(self):
@@ -162,6 +163,48 @@ class Transaction:
                 self.source]
 
 
+class YearsTransaction:
+    
+    def __init__(self, year: int) -> None:
+        
+        self.year = year
+        self.transactions = []
+
+
+    def add_transaction(self, transaction: Transaction):
+        
+        self.transactions.append(transaction)
+    
+    
+class MonthsTransaction:
+    
+    def __init__(self, year: int, month: int) -> None:
+        
+        self.year = year
+        self.month = year
+        self.transactions = []
+
+
+    def add_transaction(self, transaction: Transaction):
+        
+        self.transactions.append(transaction)
+    
+
+class DaysTransaction:
+    
+    def __init__(self, year: int, month: int, day: int) -> None:
+        
+        self.year = year
+        self.month = year
+        self.day = day
+        self.transactions = []
+
+
+    def add_transaction(self, transaction: Transaction):
+        
+        self.transactions.append(transaction)
+       
+       
 def create_transaction(infos: list) -> Transaction:
     
     transaction = Transaction()

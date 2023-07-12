@@ -17,5 +17,6 @@ def get_value(key):
         return _global_dict[key]
     except:
         print('读取'+key+'失败\r\n')
+        return None
 
 

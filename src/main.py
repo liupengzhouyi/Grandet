@@ -68,20 +68,8 @@ if __name__ == "__main__":
         
         print(f"Source transactions days: {str(analysis.get_days(target_year=2022, target_month=11))}")
         
-        # date_infos = SplitTransaction.select_every_day(target_transactions, 2023, 5)
-        # data_values = []
-        # for item in date_infos:
-        #     year = int(str(item).split("-")[0])
-        #     month = int(str(item).split("-")[1])
-        #     day = int(str(item).split("-")[2])
-        #     targets = SplitTransaction.select_one_day(target_transactions, year=year, month=month, day=day)
-        #     a = get_batch_transactions_target_values(targets, ExtrcationRules.get_expense)
-        #     one_day_sum = math.fsum(a)
-        #     one_day_sum = round(one_day_sum, 2)
-        #     data_values.append(one_day_sum)
-        #     print_log(f"select {item} transaction: {str(len(targets))} olders, sun value is {str(one_day_sum)}, infos: {str(a)}") 
-        # GenarationImage.genaration_month_image(values=data_values, labels=date_infos)
-        
+        every_years_transactions = analysis.get_every_years_transactions()
+
         if save_transaction:
             save_transactions_to_file(all_transactions=all_transactions,
                                       transaction_file_path=transaction_file_path,
