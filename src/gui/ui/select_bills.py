@@ -55,7 +55,7 @@ def chooes_bills_folder():
     # 第1步，实例化object，建立窗口window
     select_folder_window = tk.Tk()
     # 第2步，给窗口的可视化起名字
-    select_folder_window.title('选择账单')
+    select_folder_window.title('导入账单')
     # 第3步，设定窗口的大小(长 * 宽)
     select_folder_window.geometry('800x500')  # 这里的乘是小x
     
@@ -63,7 +63,7 @@ def chooes_bills_folder():
     bills_folder_bable.pack()
     
     btn = tk.Button(
-        select_folder_window, text="选择账单", command=lambda : select_folder_path(bills_folder_bable=bills_folder_bable))
+        select_folder_window, text="导入账单", command=lambda : select_folder_path(bills_folder_bable=bills_folder_bable))
     btn.pack()
     
     print_log(f"--- Print folder path: {folder_path}")
