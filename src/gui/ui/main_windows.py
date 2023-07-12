@@ -17,28 +17,11 @@ from gui.ui.frist_page import create_grandet_bills_window
 from gui.ui.help import show_help
 
 from functions.read_table import ReadTransactionTable
-from modules.transaction_tools import analysis_all_bills
 
 
 def do_job():
     
     print("Do some job.")
-    
-   
-def analysis_bills():
-    
-    bills_files = get_value("bills_files")
-    if len(bills_files) == 0:
-        print("No bills files.")
-    else:
-        print("Bills files: " + str(bills_files))
-    
-    bills_folder_path = get_value("bills_folder")
-        
-    taregt_transactions = analysis_all_bills(target_csv_files=bills_files,
-                                             csv_folder_path=bills_folder_path)
-    
-    print("Target transactions: " + str(len(taregt_transactions)))
     
     
 def add_file(filemenu: tk.Menu, window: tk.Tk) -> tk.Menu:
