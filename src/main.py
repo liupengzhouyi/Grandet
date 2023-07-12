@@ -35,7 +35,7 @@ save_transaction = False
 if __name__ == "__main__":
     
     model = 'ui'
-    model = 'command'
+    # model = 'command'
     if model == 'ui':
         run_main_windows()
     else:
