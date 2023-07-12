@@ -6,7 +6,7 @@ _global_dict = {}
 
 def set_value(key, value):
     #定义一个全局变量
-    print(f"setting value: {key}: {value}")
+    print(f"setting value: {key}: {str(value)}")
     _global_dict[key] = value
 
 
@@ -18,5 +18,3 @@ def get_value(key):
     except:
         print('读取'+key+'失败\r\n')
         return None
-
-

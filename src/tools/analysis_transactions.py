@@ -68,6 +68,7 @@ class AnalysisTransactions:
                 result[year].add_transaction(transaction)
         
         print_log(f"years number: {len(result.keys())}")
+        
         for year in result.keys():
             print_log(f"{year} year has {str(TransactionsTools.get_transactions_size(target_transaction=result.get(year)))} transactions.")
         
