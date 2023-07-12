@@ -68,22 +68,25 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
 
     transfer_header = tk.Label(header, text=head_words[4], width=20)
     transfer_header.pack(side="left")
+    
+    all_transfer_header = tk.Label(header, text=head_words[5], width=20)
+    all_transfer_header.pack(side="left")
 
-    details_header = tk.Label(header, text=head_words[5], width=10)
+    details_header = tk.Label(header, text=head_words[6], width=10)
     details_header.pack(side="right")
 
     # 分割线
     separator = tk.Frame(yearly_summary, height=2, bd=1, relief="sunken")
     separator.pack(fill="x", padx=5, pady=5)
 
-    for year, summary, expenditure_count, income_count, transfer_count in years:
+    for year, summary, expenditure_count, income_count, transfer_count, all_transfer_count in years:
         year_row = tk.Frame(yearly_summary)
         year_row.pack(side="top", fill="x")
 
         year_label = tk.Label(year_row, text=year, width=10)
         year_label.pack(side="left")
 
-        summary_label = tk.Label(year_row, text=str(summary), width=10)
+        summary_label = tk.Label(year_row, text=str(f"{summary:.2f}"), width=10)
         summary_label.pack(side="left")
 
         expenditure_label = tk.Label(year_row, text=str(expenditure_count), width=15)
@@ -94,33 +97,15 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
 
         transfer_label = tk.Label(year_row, text=str(transfer_count), width=20)
         transfer_label.pack(side="left")
+        
+        transfer_label = tk.Label(year_row, text=str(all_transfer_count), width=20)
+        transfer_label.pack(side="left")
 
         details_button = tk.Button(year_row, text="详情", command=lambda y=year, r=root: show_details(r, y), width=10)
         details_button.pack(side="right")
     
     separator_for_image = tk.Frame(yearly_summary, height=2, bd=1, relief="sunken")
     separator_for_image.pack(fill="x", padx=5, pady=5)
-    
-    
-    # image_frame = tk.Frame(yearly_summary)
-    # image_frame.pack(side="bottom")
-    # image_path = "/Users/pengliu/Code/Grandet/src/gui/ui/images.png"
-    # img = Image.open(image_path)
-    # img_resized = img.resize((200,200), Image.ANTIALIAS) # 调整图片大小
-    # image = ImageTk.PhotoImage(img_resized)
-    # print(f"Read image: {image_path}.")
-    # image_label = tk.Label(yearly_summary)
-    # image_label.image=image
-    # image_label.pack()
-    
-    # from PIL import Image, ImageTk
-    # import tkinter as tk
-
-    # root = tk.Tk()
-
-    # 创建框架和画布
-    # frame = tk.Frame(root)
-    # frame.pack()
     
     canvas = tk.Canvas(yearly_summary, width=200, height=200)
     
@@ -157,9 +142,9 @@ def get_data() -> tuple:
         print_log(f"get every_years_transactions error.")
         # 账单文件
         files = ["账单1", "账单2", "账单3"]
-        years = [("2020", 1000, 10, 5, 3),
-                ("2021", 2000, 15, 8, 4),
-                ("2022", 3000, 20, 10, 5)]
+        years = [("2020", 1000, 10, 5, 3, 18),
+                 ("2021", 2000, 15, 8, 4, 27),
+                 ("2022", 3000, 20, 10, 5, 35)]
     else:
         print_log(f"get every_years_transactions success.")
         all_files = get_value("bills_files")
@@ -172,12 +157,13 @@ def get_data() -> tuple:
             year_transaction = every_years_transactions.get(key_word)
             if isinstance(year_transaction, YearsTransaction):
                 year = year_transaction.year
-                summary = TransactionsTools.get_transactions_size(year_transaction)
-                expenditure_count = 100
-                income_count = 100
-                transfer_count = 100
+                all_number = TransactionsTools.get_transactions_size(year_transaction)
+                summary = round(sum(TransactionsTools.get_amounts(year_transaction)), 3)
+                expenditure_count = TransactionsTools.get_summary_count(year_transaction)
+                income_count = TransactionsTools.get_income_count(year_transaction)
+                transfer_count = TransactionsTools.get_transfer_count(year_transaction)
                 
-                years.append((year, summary, expenditure_count, income_count, transfer_count))
+                years.append((year, summary, expenditure_count, income_count, transfer_count, all_number))
             else:
                 continue
 
@@ -190,11 +176,11 @@ def create_grandet_bills_window():
     # 标题
     title = "葛朗台的账单"
     # 表头
-    head_words = ["年份", "花销总额", "支出交易笔数", "收入交易笔数", "个人转账交易笔数", "详情"]
+    head_words = ["年份", "花销总额", "支出交易笔数", "收入交易笔数", "个人转账交易笔数", "交易总笔数", "详情"]
     files, years, image_path = get_data()
 
     root = tk.Tk()
-    root.geometry("1400x720") # 设置窗口大小
+    root.geometry("1600x720") # 设置窗口大小
     root.title(title)
     bill_frame = tk.Frame(root, width=150) # 设置列表框架宽度为窗口宽度的1/4
     yearly_summary = tk.Frame(root, width=600)
@@ -207,13 +193,43 @@ def create_grandet_bills_window():
                                            years=years,
                                            image_path=image_path)
 
+    years_lable = []
+    expenditure_counts = []
+    income_counts = []
+    transfer_counts = []
+    all_transfer_counts = []
+    
+    for year, summary, expenditure_count, income_count, transfer_count, all_transfer_count in years:
+        
+        years_lable.append(year)
+        expenditure_counts.append(expenditure_count)
+        income_counts.append(income_count)
+        transfer_counts.append(transfer_count)
+        all_transfer_counts.append(all_transfer_count)
+        
+    print(expenditure_counts)
+    print(income_counts)
+    print(transfer_counts)
+    print(all_transfer_counts)
 
     # 创建matplotlib图像并在Tkinter窗口中嵌入它
     fig = Figure(figsize=(5, 4), dpi=100)
     ax = fig.add_subplot(111)
-    x = np.linspace(0, 2 * np.pi, 100)
-    y = np.sin(x)
-    ax.plot(x, y)
+    # 数据
+    N = len(years_lable)
+    ind = np.arange(N) # x 轴的位置
+    width = 0.15 # 柱子的宽度
+    rects1 = ax.bar(ind, tuple(expenditure_counts), width, label='expend')
+    rects2 = ax.bar(ind + width, tuple(income_counts), width, label='income')
+    rects3 = ax.bar(ind + width * 2, tuple(transfer_counts), width, label='self')
+    rects3 = ax.bar(ind + width * 3, tuple(all_transfer_counts), width, label='all')
+    
+    # 添加文本标签和标题
+    # ax.set_ylabel('Scores')
+    # ax.set_title('Scores by group and gender')
+    ax.set_xticks(ind)
+    ax.set_xticklabels(tuple(years_lable))
+    ax.legend()
 
     canvas = FigureCanvasTkAgg(fig, master=yearly_summary)
     canvas.draw()
