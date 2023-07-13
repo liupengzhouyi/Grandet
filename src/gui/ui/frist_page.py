@@ -107,23 +107,6 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         details_button = tk.Button(year_row, text="详情", command=lambda y=year: create_grandet_bills_window_by_year(y), width=10)
         
         details_button.pack(side="right")
-    
-    separator_for_image = tk.Frame(yearly_summary, height=2, bd=1, relief="sunken")
-    separator_for_image.pack(fill="x", padx=5, pady=5)
-    
-    canvas = tk.Canvas(yearly_summary, width=200, height=200)
-    
-    print(f"Read image: {image_path}.")
-    # 打开图像并转换为PhotoImage对象
-    img = Image.open(image_path)
-    img_resized = img.resize((200,200), Image.ANTIALIAS) # 调整图片大小
-
-    photo = ImageTk.PhotoImage(img_resized, master=canvas)
-
-    # 在画布上插入图像
-    canvas.create_image(100, 100, anchor=tk.CENTER, image=photo)
-    canvas.pack()
-    # root.mainloop()
 
     return yearly_summary
     

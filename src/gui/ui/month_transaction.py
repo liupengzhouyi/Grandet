@@ -13,13 +13,13 @@ from matplotlib.figure import Figure
 from functions.log4py import print_log
 from gui.ui.globel_varable import set_value
 from gui.ui.globel_varable import get_value
-from gui.ui.month_transaction import create_grandet_bills_window_by_month
 
 from functions.read_table import ReadTransactionTable
 from functions.log4py import print_log
 
 from modules.transaction import YearsTransaction
 from modules.transaction import MonthsTransaction
+from modules.transaction import DaysTransaction
 from modules.transactions_tools import TransactionsTools
 
 
@@ -49,7 +49,7 @@ def fill_bill_files(bill_frame: tk.Frame, file_names: list) -> tk.Frame:
     return bill_frame
 
 
-def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: list, months: list, year: int) -> tk.Frame:
+def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: list, months: list) -> tk.Frame:
     
     # 右侧每年花销简介
     # yearly_summary = tk.Frame(root)
@@ -105,7 +105,7 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         transfer_label = tk.Label(month_row, text=str(all_transfer_count), width=20)
         transfer_label.pack(side="left")
 
-        details_button = tk.Button(month_row, text="详情", command=lambda y=year, m=month: create_grandet_bills_window_by_month(y, m), width=10)
+        details_button = tk.Button(month_row, text="详情", command=lambda y=month, r=root: show_details(r, y), width=10)
         details_button.pack(side="right")
 
     return yearly_summary
@@ -119,8 +119,8 @@ def show_details(root: tk.Tk, year: str):
     details_label.pack()
 
 
-def get_data_by_year(year: int) -> tuple:
-        
+def get_data_by_month(year: int, month: int) -> tuple:
+
     files = []
     years = []
     print_log(f"get {str(year)} year transactions")
@@ -135,31 +135,34 @@ def get_data_by_year(year: int) -> tuple:
     else:
         year_transaction = every_years_transactions.get(str(year))
         
-            
         if year_transaction is not None:
-            
             print_log(f"get every_years_transactions success.")
             all_files = get_value("bills_files")
             files = []
             for item in all_files:
                 files.append(os.path.basename(item))
-                
             years = []
             month_transactions = []
             if isinstance(year_transaction, YearsTransaction):
                 month_transactions = year_transaction.to_MonthsTransaction()
-            
             for month_transaction_item in month_transactions.keys():   
                 month_transaction = month_transactions.get(month_transaction_item)
                 if isinstance(month_transaction, MonthsTransaction):
-                    month = month_transaction.month
-                    all_number = TransactionsTools.get_transactions_size(month_transaction)
-                    summary = round(sum(TransactionsTools.get_amounts(month_transaction)), 3)
-                    expenditure_count = TransactionsTools.get_summary_count(month_transaction)
-                    income_count = TransactionsTools.get_income_count(month_transaction)
-                    transfer_count = TransactionsTools.get_transfer_count(month_transaction)
-                    
-                    years.append((month, summary, expenditure_count, income_count, transfer_count, all_number))
+                    if month_transaction.month == month:
+                        print_log(f"Get taregt month {str(month)} transaction.")
+                        days_transactions = month_transaction.to_DaysTransaction()
+                        for day_transaction_item in days_transactions.keys():
+                            days_transaction = days_transactions.get(day_transaction_item)
+                            if isinstance(days_transaction, DaysTransaction):
+                                day = days_transaction.day
+                                all_number = TransactionsTools.get_transactions_size(days_transaction)
+                                summary = round(sum(TransactionsTools.get_amounts(days_transaction)), 3)
+                                expenditure_count = TransactionsTools.get_summary_count(days_transaction)
+                                income_count = TransactionsTools.get_income_count(days_transaction)
+                                transfer_count = TransactionsTools.get_transfer_count(days_transaction)
+                                years.append((day, summary, expenditure_count, income_count, transfer_count, all_number))
+                    else:
+                        continue
                 else:
                     continue
         else:
@@ -167,13 +170,14 @@ def get_data_by_year(year: int) -> tuple:
     return (files, years)
 
 
-def create_grandet_bills_window_by_year(year: int):
+def create_grandet_bills_window_by_month(year: int, month: int):
     
     # 标题
     title = f"葛朗台{str(year)}年的账单"
     # 表头
-    head_words = ["月份", "花销总额", "支出交易笔数", "收入交易笔数", "个人转账交易笔数", "交易总笔数", "详情"]
-    files, months = get_data_by_year(year)
+    head_words = ["日期", "花销总额", "支出交易笔数", "收入交易笔数", "个人转账交易笔数", "交易总笔数", "详情"]
+    
+    files, months = get_data_by_month(year=year, month=month)
 
     root = tk.Tk()
     root.geometry("1600x720") # 设置窗口大小
@@ -186,10 +190,8 @@ def create_grandet_bills_window_by_year(year: int):
     yearly_summary = fill_bill_information(yearly_summary=yearly_summary,
                                            root=root,
                                            head_words=head_words,
-                                           months=months,
-                                           year=year)
+                                           months=months)
                                            
-
     years_lable = []
     expenditure_counts = []
     income_counts = []
