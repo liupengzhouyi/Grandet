@@ -176,6 +176,14 @@ class DaysTransaction:
     def add_transaction(self, transaction: Transaction):
         
         self.transactions.append(transaction)
+        
+    def get_target_transactions(self, target_day: int) -> list:
+        
+        target_transactions = []
+        for transaction in self.transactions:
+            if transaction.get_datetime().day == target_day:
+                target_transactions.append(transaction)
+        return target_transactions
     
     
 class MonthsTransaction:
@@ -192,7 +200,7 @@ class MonthsTransaction:
         self.transactions.append(transaction)
     
     
-    def to_DaysTransaction(self) -> list:
+    def to_DaysTransaction(self) -> dict:
         
         print_log("Begin set every days transactions.")
         days = []
