@@ -49,7 +49,7 @@ def fill_bill_files(bill_frame: tk.Frame, file_names: list) -> tk.Frame:
     return bill_frame
 
 
-def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: list, months: list) -> tk.Frame:
+def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: list, months: list, days_transactions: DaysTransaction) -> tk.Frame:
     
     # 右侧每年花销简介
     # yearly_summary = tk.Frame(root)
@@ -104,8 +104,15 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         
         transfer_label = tk.Label(month_row, text=str(all_transfer_count), width=20)
         transfer_label.pack(side="left")
-
-        details_button = tk.Button(month_row, text="详情", command=lambda y=month, r=root: show_details(r, y), width=10)
+        
+        days_transaction = days_transactions.get(str(month))
+        
+        target_transactions = []
+        if isinstance(days_transaction, DaysTransaction):
+            target_transactions = days_transaction.get_target_transactions(month)
+        
+        details_button = tk.Button(month_row, text="详情",
+                                   command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_terminal(ts), width=10)
         details_button.pack(side="right")
 
     return yearly_summary
@@ -123,6 +130,7 @@ def get_data_by_month(year: int, month: int) -> tuple:
 
     files = []
     years = []
+    days_transactions = None
     print_log(f"get {str(year)} year transactions")
     every_years_transactions = get_value("every_years_transactions")
     if every_years_transactions is None:
@@ -167,7 +175,7 @@ def get_data_by_month(year: int, month: int) -> tuple:
                     continue
         else:
             print_log(f"get every months transactions error.")
-    return (files, years)
+    return (files, years, days_transactions)
 
 
 def create_grandet_bills_window_by_month(year: int, month: int):
@@ -177,7 +185,7 @@ def create_grandet_bills_window_by_month(year: int, month: int):
     # 表头
     head_words = ["日期", "花销总额", "支出交易笔数", "收入交易笔数", "个人转账交易笔数", "交易总笔数", "详情"]
     
-    files, months = get_data_by_month(year=year, month=month)
+    files, months, days_transactions = get_data_by_month(year=year, month=month)
 
     root = tk.Tk()
     root.geometry("1600x720") # 设置窗口大小
@@ -190,7 +198,8 @@ def create_grandet_bills_window_by_month(year: int, month: int):
     yearly_summary = fill_bill_information(yearly_summary=yearly_summary,
                                            root=root,
                                            head_words=head_words,
-                                           months=months)
+                                           months=months,
+                                           days_transactions=days_transactions)
                                            
     years_lable = []
     expenditure_counts = []
