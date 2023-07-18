@@ -23,8 +23,13 @@ from tools.extraction_rules import ExtrcationRules
 from gui.create_image.create_image import GenarationImage
 
 from gui.ui.main_windows import run_main_windows
+from gui.ui.show_transactions_as_table import ShowTransaction
 
 from tools.analysis_transactions import AnalysisTransactions
+
+from modules.transactions_tools import TransactionsTools
+from modules.transaction_filter import FilterRules
+from modules.transaction_filter import FilterRulesFactory
 
 
 csv_folder_path = "/Users/pengliu/Code/Grandet/bills/"
@@ -35,7 +40,7 @@ save_transaction = False
 if __name__ == "__main__":
     
     model = 'ui'
-    # model = 'command'
+    model = 'command'
     if model == 'ui':
         run_main_windows()
     else:
@@ -58,6 +63,15 @@ if __name__ == "__main__":
         target_transactions = analysis_all_bills(target_csv_files=target_csv_files, 
                                                  csv_folder_path=csv_folder_path)
 
+        # rules = []
+        # rules.append(FilterRulesFactory(name="交易对方", operation="包含", value="姜威"))
+        # rules.append(FilterRulesFactory(name="交易对方", operation="不等于", value=""))
+        # #  add your code here
+        # a = TransactionsTools.filter_transactions(transactions=target_transactions, rules=rules)
+        # print(type(a))
+        # print(len(a))
+        # ShowTransaction.show_transactions(transactions=a)
+        
         analysis = AnalysisTransactions(transactions=target_transactions)
         
         print(f"Target transactions: {str(analysis.get_size())}")

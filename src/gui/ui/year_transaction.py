@@ -105,6 +105,9 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         transfer_label = tk.Label(month_row, text=str(all_transfer_count), width=20)
         transfer_label.pack(side="left")
 
+        month_button = tk.Button(month_row, text="详细", command=lambda y=year, m=month: create_grandet_bills_window_by_month(y, m), width=10)
+        month_button.pack(side="right")
+        
         details_button = tk.Button(month_row, text="详情", command=lambda y=year, m=month: create_grandet_bills_window_by_month(y, m), width=10)
         details_button.pack(side="right")
 

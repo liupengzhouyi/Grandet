@@ -10,6 +10,8 @@ from modules.transaction import MonthsTransaction
 from modules.transaction import YearsTransaction
 from gui.ui.show_transactions_as_table import ShowTransaction
 
+from modules.transaction_filter import FilterRules
+from tools.extraction_rules import ExtrcationRules
 
 class TransactionsTools:
     
@@ -237,4 +239,21 @@ class TransactionsTools:
         
         cls.show_transactions_in_terminal(transactions=transactions)
         reversed(transactions)
-        ShowTransaction.show_transactions(transactions=transactions)          
+        ShowTransaction.show_transactions(transactions=transactions)
+        
+    
+    @classmethod
+    def filter_transactions(cls, transactions: list, rules: list) -> list:
+        
+        target_transaction = []
+        for transaction in transactions:
+            if isinstance(transaction, Transaction):
+                check_result = True
+                for rule in rules:
+                    if isinstance(rule, FilterRules):
+                        if not ExtrcationRules.check_transaction_by_filter_rule(transaction=transaction, rule=rule):
+                            check_result = False
+                if check_result:
+                    target_transaction.append(transaction)
+        return target_transaction
+

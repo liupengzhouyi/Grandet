@@ -21,16 +21,24 @@ class ShowTransaction:
         window = tk.Tk()
         window.title("表格数据")
         all_heading = ["交易时间", "交易分类", "交易对方", "对方账号", "商品说明", "收/支", "金额", "收/付款方式", "交易状态", "交易订单号", "商家订单号", "备注", "来源"]
+        all_heading_width = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
 
         heading_text = []
         for index, item in enumerate(all_heading):
             if index not in index_flitter:
                 heading_text.append(item)
+        
         # 创建表格
         tree = ttk.Treeview(window)
+        
+        yscrollbar = ttk.Scrollbar(window)
+        yscrollbar.pack(side=tk.RIGHT,fill=tk.Y)
+        yscrollbar.config(command=tree.yview)
+        tree.configure(yscrollcommand=yscrollbar.set) # 经过试验，以上两行代码交换顺序后无影响
+
         tree["columns"] = heading_text
         for index, item in enumerate(heading_text):
-            tree.column(item, width=100)
+            tree.column(item, width=all_heading_width[index])
             tree.heading(item, text=item)
         # 插入数据
         l = len(transactions)
