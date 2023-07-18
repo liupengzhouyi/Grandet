@@ -91,17 +91,14 @@ def analysis_all_bills(target_csv_files: list, csv_folder_path: str) -> list:
     all_transactions = []
 
     for item in target_csv_files:
+        
         info = "Read transaction csv file: " + item
         print_log(info)
-        file_source = str(item).replace(csv_folder_path, "").split('/')[0]
-        info = "The file source was " + file_source
-        print_log(info)
-        
         transactions = ReadTransactionTable.open_csv(csv_file_path=item,
                                                     head=False,
-                                                    frist_line_word='交易时间',
-                                                    source=file_source)
+                                                    frist_line_word='交易时间')
         all_transactions.extend(transactions)
+        
     all_transactions.sort(key=cmp_to_key(cmp_transaction_by_datetime))
     target_transactions = delete_same_transaction(all_transactions)
     print_log("All transactions count: " + str(len(target_transactions)) + ".")

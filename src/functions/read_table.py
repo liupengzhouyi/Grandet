@@ -85,8 +85,28 @@ class ReadTransactionTable:
 
 
     @classmethod
-    def open_csv(cls, csv_file_path: str, head=False, frist_line_word="", source="alipay") -> list:
+    def alipay_or_wechat(cls, csv_file_path: str) -> str:
         
+        alipay_word = '-------支付宝（中国）网络技术有限公司  电子客户回单'
+        wechat_word = "-------微信支付账单明细列表------"
+        source="alipay"
+        for line in open(csv_file_path):
+            if wechat_word in line:
+                print(line)
+                source = "wechat"
+                break
+            if alipay_word in line:
+                print(line)
+                source = "alipay"
+                break
+        
+        return source
+
+
+    @classmethod
+    def open_csv(cls, csv_file_path: str, head=False, frist_line_word="") -> list:
+        
+        source = cls.alipay_or_wechat(csv_file_path=csv_file_path)
         transactions = []
         with open(csv_file_path, 'r') as f:
             reader = csv.reader(f)
@@ -103,7 +123,6 @@ class ReadTransactionTable:
                 if not head_:
                     head_ = True
                     continue
-
                 temp = create_transaction(row)
                 temp_transaction_with_source = InjectStyle.add_source(temp, source)
                 # temp_transaction_with_source.show()
