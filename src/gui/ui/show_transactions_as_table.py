@@ -47,5 +47,3 @@ class ShowTransaction:
         # 运行窗口
         window.mainloop()
 
-
-

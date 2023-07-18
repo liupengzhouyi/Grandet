@@ -23,3 +23,8 @@ class ExtrcationRules:
         if '支出' in str(transaction.income_expense):
             value = transaction.amount 
         return value
+    
+    @classmethod
+    def add_taget(cls, transaction: Transaction, rules: map) -> Transaction:
+        
+        pass

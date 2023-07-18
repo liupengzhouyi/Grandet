@@ -235,5 +235,6 @@ class TransactionsTools:
     @classmethod
     def show_transactions_in_window(cls, transactions: list):
         
+        cls.show_transactions_in_terminal(transactions=transactions)
         reversed(transactions)
         ShowTransaction.show_transactions(transactions=transactions)          
