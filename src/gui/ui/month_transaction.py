@@ -111,8 +111,10 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         if isinstance(days_transaction, DaysTransaction):
             target_transactions = days_transaction.get_target_transactions(month)
         
-        details_button = tk.Button(month_row, text="详情",
-                                   command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_window(ts), width=10)
+        day_button = tk.Button(month_row, text="详情", command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_window(ts), width=10)
+        day_button.pack(side="right")
+        
+        details_button = tk.Button(month_row, text="详情", command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_window(ts), width=10)
         details_button.pack(side="right")
 
     return yearly_summary

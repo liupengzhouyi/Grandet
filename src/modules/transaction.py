@@ -29,12 +29,51 @@ class Transaction:
         self.merchant_number = ''
         self.remark = ''
         self.source = ''
+        self.class_level_1 = ''
+        self.class_level_2 = ''
         
         
     def get_datetime(self) -> TransactionDateTime:
         
         return self.time_
     
+    def get_value_str_by_name(self, name: str) -> str:
+
+        # 交易时间,交易分类,交易对方,对方账号,商品说明,收/支,金额,    收/付款方式,交易状态,交易订单号,商家订单号,备注,
+        # 交易时间,交易类型,交易对方,        商品,   收/支,金额(元),支付方式,   当前状态,交易单号,  商户单号,  备注
+        value = ''
+        if name  == "交易时间":
+            value = self.time_.get_v_str()
+        elif name == "交易分类" or name == "交易类型":
+            value = self.type_
+        elif name == "交易对方":
+            value = self.counterparty.replace(" ", "")
+        elif name == "对方账号":
+            value = self.amount_counter
+        elif name == "商品说明" or name == "商品":
+            value = self.product
+        elif name == "收/支" or name == "收支":
+            value = self.income_expense
+        elif name == "金额" or name == "金额(元)":
+            value = self.amount
+        elif name == "收/付款方式" or name == "支付方式":
+            value = self.payment_method
+        elif name == "交易状态" or name == "当前状态":
+            value = self.current_status
+        elif name == "交易订单号" or name == "交易单号":
+            value = self.transaction_number
+        elif name == "商家订单号" or name == "商家单号":
+            value = self.merchant_number
+        elif name == "备注":
+            value = self.remark
+        elif name == "来源":
+            value = self.source
+        elif name == "分类1":
+            value = self.class_level_1
+        elif name == "分类2":
+            value = self.class_level_2
+            
+        return value
     
     def get_date_info_as_str(self) -> str:
         
