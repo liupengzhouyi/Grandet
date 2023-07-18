@@ -112,7 +112,7 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
             target_transactions = days_transaction.get_target_transactions(month)
         
         details_button = tk.Button(month_row, text="详情",
-                                   command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_terminal(ts), width=10)
+                                   command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_window(ts), width=10)
         details_button.pack(side="right")
 
     return yearly_summary

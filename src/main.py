@@ -56,7 +56,7 @@ if __name__ == "__main__":
         print(head)
         
         target_transactions = analysis_all_bills(target_csv_files=target_csv_files, 
-                                                 csv_folder_path=csv_folder_path)±±
+                                                 csv_folder_path=csv_folder_path)
 
         analysis = AnalysisTransactions(transactions=target_transactions)
         

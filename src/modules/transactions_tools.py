@@ -9,6 +9,7 @@ from modules.transaction import DaysTransaction
 from modules.transaction import MonthsTransaction
 from modules.transaction import YearsTransaction
 
+from gui.ui.show_transactions_as_table import ShowTransaction
 
 class TransactionsTools:
     
@@ -228,4 +229,11 @@ class TransactionsTools:
                         transaction.source
                     ]               
                     table.append(row)
-            print(tabulate(table, headers=headers))             
+            print(tabulate(table, headers=headers))    
+            
+    
+    @classmethod
+    def show_transactions_in_window(cls, transactions: list):
+        
+        
+        ShowTransaction.show_transactions(transactions=transactions)          
