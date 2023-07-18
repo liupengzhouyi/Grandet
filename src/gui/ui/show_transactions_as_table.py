@@ -29,9 +29,10 @@ class ShowTransaction:
             tree.column(item, width=100)
             tree.heading(item, text=item)
         # 插入数据
+        l = len(transactions)
         for index, item in enumerate(transactions):
             if isinstance(item, Transaction):
-                tree.insert("", 0, text=f"{str(index)}", values=item.to_list())
+                tree.insert("", 0, text=f"{str(l - index)}", values=item.to_list())
 
         tree.pack()
 
