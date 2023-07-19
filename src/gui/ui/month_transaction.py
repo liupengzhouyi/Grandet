@@ -14,6 +14,8 @@ from functions.log4py import print_log
 from gui.ui.globel_varable import set_value
 from gui.ui.globel_varable import get_value
 
+from gui.ui.detail_page import DetailPage
+
 from functions.read_table import ReadTransactionTable
 from functions.log4py import print_log
 
@@ -111,7 +113,7 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         if isinstance(days_transaction, DaysTransaction):
             target_transactions = days_transaction.get_target_transactions(month)
         
-        day_button = tk.Button(month_row, text="详情", command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_window(ts), width=10)
+        day_button = tk.Button(month_row, text="分析", command=lambda ts=target_transactions: DetailPage.show_detail_page(ts, f"分析"), width=10)
         day_button.pack(side="right")
         
         details_button = tk.Button(month_row, text="详情", command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_window(ts), width=10)

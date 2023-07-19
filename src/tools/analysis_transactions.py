@@ -74,6 +74,52 @@ class AnalysisTransactions:
         
         print_log("Set every years transactions over.")
         return result
+    
+    
+    @classmethod
+    def analyze_transactions_income(cls, transactions: list) -> tuple:
         
+        key_word = "收入"
+        count = 0
+        money = 0.0
+        temp_transactions = []
+        for transaction in transactions:
+            if isinstance(transaction, Transaction):
+                if transaction.income_expense == key_word:
+                    count += 1
+                    money += float(transaction.amount)
+                    temp_transactions.append(transaction)
+        return (count, money, temp_transactions)
+    
+    
+    @classmethod
+    def analyze_transactions_expenditure(cls, transactions: list) -> tuple:
         
+        key_word = "支出"
+        count = 0
+        money = 0.0
+        temp_transactions = []
+        for transaction in transactions:
+            if isinstance(transaction, Transaction):
+                if transaction.income_expense == key_word:
+                    count += 1
+                    money += float(transaction.amount)
+                    temp_transactions.append(transaction)
+        return (count, money, temp_transactions)
+
+    
+    @classmethod
+    def analyze_transactions_no_income_and_expenditure(cls, transactions: list) -> tuple:
+        
+        key_word = "不计收支"
+        count = 0
+        money = 0.0
+        temp_transactions = []
+        for transaction in transactions:
+            if isinstance(transaction, Transaction):
+                if transaction.income_expense == key_word:
+                    count += 1
+                    money += float(transaction.amount)
+                    temp_transactions.append(transaction)
+        return (count, money, temp_transactions)
         
