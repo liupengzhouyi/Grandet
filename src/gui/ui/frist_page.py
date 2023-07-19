@@ -24,9 +24,6 @@ from modules.transactions_tools import TransactionsTools
 def fill_bill_files(bill_frame: tk.Frame, file_names: list) -> tk.Frame:
     
     # 左侧账单文件列表
-    # bill_frame = tk.Frame(root)
-    # bill_frame = tk.Frame(root, width=20) # 设置列表框架宽度为窗口宽度的1/4
-    # bill_frame.pack(side="left", fill="both", expand=True)
     bill_frame.pack(side="left", fill="y", expand=True)
 
     bill_header = tk.Label(bill_frame, text="📁 账单文件列表")
