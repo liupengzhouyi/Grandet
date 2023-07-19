@@ -5,7 +5,7 @@ from tkinter import ttk
 from PIL import ImageTk, Image
 
 from tools.analysis_transactions import AnalysisTransactions
-
+from gui.ui.show_transactions_as_table import ShowTransaction
 
 class DetailPage:
     
@@ -31,9 +31,9 @@ class DetailPage:
         left_tree.column("two", width=100)
         left_tree.heading("one", text="交易笔数")
         left_tree.heading("two", text="金额")
-        left_tree.insert("", 0, text="收入",    values=(f"{str(count_01)}", f"{str(money_01)}"))
-        left_tree.insert("", 1, text="支出",    values=(f"{str(count_02)}", f"{str(money_02)}"))
-        left_tree.insert("", 2, text="不记收支", values=(f"{str(count_03)}", f"{str(money_03)}"))
+        left_tree.insert("", 0, text="收入",    values=(f"{str(count_01)}", f"{money_01:.2f}"))
+        left_tree.insert("", 1, text="支出",    values=(f"{str(count_02)}", f"{money_02:.2f}"))
+        left_tree.insert("", 2, text="不记收支", values=(f"{str(count_03)}", f"{money_03:.2f}"))
         left_tree.insert("", 3, text="总计",    values=(f"{str(count)}", f"{str(money)}"))
         
         return left_tree
@@ -89,13 +89,18 @@ class DetailPage:
 
         # 右侧上方实现表格
         tree = ttk.Treeview(right_panel)
-        tree["columns"] = ("one", "two")
-        tree.column("one", width=100)
-        tree.column("two", width=100)
-        tree.heading("one", text="列标题1")
-        tree.heading("two", text="列标题2")
-        tree.insert("", 0, text="行1", values=("1A", "1B"))
-        tree.insert("", 1, text="行2", values=("2A", "2B"))
+        yscrollbar = ttk.Scrollbar(window)
+        yscrollbar.pack(side=tk.RIGHT,fill=tk.Y)
+        yscrollbar.config(command=tree.yview)
+        tree.configure(yscrollcommand=yscrollbar.set)
+        tree = ShowTransaction.genaertion_table(tree=tree, transactions=transactions)
+        # tree["columns"] = ("one", "two")
+        # tree.column("one", width=100)
+        # tree.column("two", width=100)
+        # tree.heading("one", text="列标题1")
+        # tree.heading("two", text="列标题2")
+        # tree.insert("", 0, text="行1", values=("1A", "1B"))
+        # tree.insert("", 1, text="行2", values=("2A", "2B"))
         tree.pack()
 
         # 右侧添加分界线
