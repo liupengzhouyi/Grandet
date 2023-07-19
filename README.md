@@ -14,4 +14,4 @@
 
 ## 每月的账单分析
 
-![img](./images/index_04.png)
+![img](./images/index_05.png)
