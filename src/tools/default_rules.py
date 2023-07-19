@@ -3,7 +3,7 @@
 rules = {
     "住宿费用": {
         "酒店住宿": {
-             "0": {"head": "交易分类", "operation": "包含", "value": "住宿费用"},
+             "0": {"name": "交易分类", "operation": "包含", "value": "住宿费用"},
         },
         "房租": {
             
@@ -32,64 +32,64 @@ rules = {
     },
     "餐饮美食": {
         "朋友聚餐": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "餐饮美食"},
-            "1": {"head": "金额", "operation": "大于", "value": "200"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "餐饮美食"},
+            "1": {"name": "金额", "operation": "大于", "value": "200"},
         },
         "日常外卖": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "餐饮美食"},
-            "1": {"head": "交易对方", "operation": "包含", "value": "饿了吗"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "餐饮美食"},
+            "1": {"name": "交易对方", "operation": "包含", "value": "饿了吗"},
         },
         "优惠团购": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "餐饮美食"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "餐饮美食"},
         },
         "到店吃饭": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "餐饮美食"},
-            "1": {"head": "金额", "operation": "大于", "value": "200"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "餐饮美食"},
+            "1": {"name": "金额", "operation": "大于", "value": "200"},
         },
         "其他": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "餐饮美食"}
+            "0": {"name": "交易分类", "operation": "包含", "value": "餐饮美食"}
         }
     },
     "交通出行": {
         "上班通勤": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "交通出行"},
-            "1": {"head": "交易对方", "operation": "不包含", "value": "轨道交通"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "交通出行"},
+            "1": {"name": "交易对方", "operation": "不包含", "value": "轨道交通"},
         },
         "市内出行": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "交通出行"},
-            "1": {"head": "交易对方", "operation": "包含", "value": "轨道交通"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "交通出行"},
+            "1": {"name": "交易对方", "operation": "包含", "value": "轨道交通"},
         },
         "跨市出行": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "交通出行"},
-            "1": {"head": "交易对方", "operation": "包含", "value": "铁路12306"},
-            "2": {"head": "交易对方", "operation": "包含", "value": "票务"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "交通出行"},
+            "1": {"name": "交易对方", "operation": "包含", "value": "铁路12306"},
+            "2": {"name": "交易对方", "operation": "包含", "value": "票务"},
         }
 
     },
     "日用百货": {
         "体检": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "扫二维码付款"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "扫二维码付款"},
         }
 
     },
     "医疗保健": {
         "体检": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "FAFULI"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "FAFULI"},
         },
         "买药": {},
         "挂号": {}
     },
     "生活服务": {
         "寄送快递": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "生活服务"},
-            "1": {"head": "交易对方", "operation": "包含", "value": "顺丰"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "生活服务"},
+            "1": {"name": "交易对方", "operation": "包含", "value": "顺丰"},
         },
         "美容美发": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "美容美发"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "美容美发"},
         },
         "洗化用品": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "美容美发"},
-            "1": {"head": "交易对方", "operation": "包含", "value": "天猫"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "美容美发"},
+            "1": {"name": "交易对方", "operation": "包含", "value": "天猫"},
         },
         "服饰装扮": {
             
@@ -98,14 +98,14 @@ rules = {
     },
     "信息订阅": {
         "充值缴费": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "充值缴费"},
-            "1": {"head": "交易对方", "operation": "包含", "value": "中国移动"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "充值缴费"},
+            "1": {"name": "交易对方", "operation": "包含", "value": "中国移动"},
         },
     },
     "公共服务": {
         "证件办理": {
-            "0": {"head": "交易分类", "operation": "包含", "value": "公共服务"},
-            "1": {"head": "交易对方", "operation": "包含", "value": "证件费"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "公共服务"},
+            "1": {"name": "交易对方", "operation": "包含", "value": "证件费"},
         }
     },
     "娱乐休闲": {

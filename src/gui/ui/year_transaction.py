@@ -14,9 +14,12 @@ from functions.log4py import print_log
 from gui.ui.globel_varable import set_value
 from gui.ui.globel_varable import get_value
 from gui.ui.month_transaction import create_grandet_bills_window_by_month
+from gui.ui.detail_page import DetailPage
 
 from functions.read_table import ReadTransactionTable
 from functions.log4py import print_log
+
+from modules.transaction_extract import ExtractTransactions
 
 from modules.transaction import YearsTransaction
 from modules.transaction import MonthsTransaction
@@ -108,7 +111,9 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         month_button = tk.Button(month_row, text="详细", command=lambda y=year, m=month: create_grandet_bills_window_by_month(y, m), width=10)
         month_button.pack(side="right")
         
-        details_button = tk.Button(month_row, text="详情", command=lambda y=year, m=month: create_grandet_bills_window_by_month(y, m), width=10)
+        target_transactions = ExtractTransactions.extract_by_year_month(year=year, month=month)
+        title = f"{str(year)}年-{str(month)}月 账单详情"
+        details_button = tk.Button(month_row, text="分析", command=lambda ts=target_transactions, t=title: DetailPage.show_detail_page(ts, t), width=10)
         details_button.pack(side="right")
 
     return yearly_summary

@@ -271,6 +271,7 @@ class MonthsTransaction:
 
 class YearsTransaction:
     
+    
     def __init__(self, year: int) -> None:
         
         self.year = year

@@ -89,6 +89,7 @@ class AnalysisTransactions:
                     count += 1
                     money += float(transaction.amount)
                     temp_transactions.append(transaction)
+        print_log(f"账单收入详情：交易笔数:{str(count)} 金额:{str(money)}.")
         return (count, money, temp_transactions)
     
     
@@ -105,6 +106,7 @@ class AnalysisTransactions:
                     count += 1
                     money += float(transaction.amount)
                     temp_transactions.append(transaction)
+        print_log(f"账单收入详情：交易笔数:{str(count)} 金额:{str(money)}.")
         return (count, money, temp_transactions)
 
     
@@ -117,9 +119,11 @@ class AnalysisTransactions:
         temp_transactions = []
         for transaction in transactions:
             if isinstance(transaction, Transaction):
+                print_log(f"{transaction.income_expense}")
                 if transaction.income_expense == key_word:
                     count += 1
                     money += float(transaction.amount)
                     temp_transactions.append(transaction)
+        print_log(f"账单收入详情：交易笔数:{str(count)} 金额:{str(money)}.")
         return (count, money, temp_transactions)
         
