@@ -4,6 +4,11 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
 
+from matplotlib.figure import Figure
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 from tools.analysis_transactions import AnalysisTransactions
 from gui.ui.show_transactions_as_table import ShowTransaction
 
@@ -137,6 +142,28 @@ class DetailPage:
         # 右侧添加分界线
         ttk.Separator(right_panel, orient="horizontal").pack(fill="x")
 
+
+        years_lable = [1, 2, 3]
+        expenditure_counts = [1, 3, 5]
+        income_counts = [2, 4, 6]
+        
+        fig = Figure(figsize=(5, 4), dpi=100)
+        ax = fig.add_subplot(111)
+        # 数据
+        N = len(years_lable)
+        ind = np.arange(N) # x 轴的位置
+        width = 0.15 # 柱子的宽度
+        ax.set_xticks(ind)
+        ax.set_xticklabels(tuple(years_lable))
+        ax.legend()
+    
+        rects1 = ax.bar(ind, tuple(expenditure_counts), width, label='expend')
+        rects2 = ax.bar(ind + width, tuple(income_counts), width, label='income')
+    
+        canvas = FigureCanvasTkAgg(fig, master=right_panel)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+    
         # 右侧下方插入图片
         # image = Image.open("/Users/pengliu/Code/Grandet/src/tests/iii.png")
         # photo = ImageTk.PhotoImage(image)
