@@ -6,6 +6,7 @@ from PIL import ImageTk, Image
 
 from functions.log4py import print_log
 from modules.transaction import Transaction
+from modules.transactions_tools import TransactionsTools
 
 from matplotlib.figure import Figure
 import numpy as np
@@ -88,7 +89,7 @@ class DetailPage:
 
 
     @classmethod
-    def full_button(cls, window: tk.Frame) -> tk.Frame:
+    def full_button(cls, window: tk.Frame, transactions: list) -> tk.Frame:
         
         check_button_text = ['餐饮美食', '投资理财', '生活服务', '日用百货', '交通出行', '信用借还', '酒店旅游', '收入', '账户存取',
                             '退款', '商业服务', '文化休闲', '充值缴费', '爱车养车', '转账红包', '教育培训', '美容美发', '服饰装扮',
@@ -96,6 +97,8 @@ class DetailPage:
                             '转账', '微信红包（单发）', '扫二维码付款', '转账-退款', '微信红包', '零钱提现', '零钱充值', '群收款',
                             '退款', '微信红包（群红包）', '二维码收款', ]
         target_type_codes = []
+        
+        check_buttons = []
         number_of_line = 3
         n = 0
         j = 0
@@ -104,14 +107,13 @@ class DetailPage:
             checkboxes[index] = tk.BooleanVar(window)
             temp_check_button = tk.Checkbutton(window, text=item, variable=checkboxes[index])
             temp_check_button.grid(row=n, column=j)
-            
+            check_buttons.append(temp_check_button)
             j += 1
             if j == number_of_line:
                 j = 0
                 n += 1
             
         # 画一个分界线
-        # n = int(len(check_button_text) / number_of_line)
         n = n + 1
         ttk.Separator(window, orient="horizontal").grid(row=n, column=0, columnspan=4, sticky="ew")
         n = n + 2
@@ -128,21 +130,34 @@ class DetailPage:
         n = n + 1
 
         def button_Click(event=None):
+            
             print(len(checkboxes.keys()))
+            filter_words = []
             for i in checkboxes.keys():           # 检查此字典的关键字,同: for i in checkboxes:
                 if checkboxes[i].get() == True:   # 若被选中则执行
-                    print(f"{str(i)}: {str(checkboxes[i].get())}", end=", ")
+                    print(f"{str(i)}: [{str(checkboxes[i].get())}:{str(check_button_text[i])}]", end=", ")
+                    filter_words.append(check_button_text[i])
             print()
             print(radio_var.get())
+            print(filter_words)
+            new_transactions = TransactionsTools.filter_transactions_simple(transactions=transactions,
+                                                                            type_word=filter_words)
+            sub_title_name = "窗口:"
+            for item in filter_words:
+                sub_title_name += f"{item}-"
+            print_log(sub_title_name)
+            if len(filter_words) > 0:
+                cls.show_detail_page(transactions=new_transactions, window_title=sub_title_name)
+            
+            
         
-        # def clear():
-        #     for i in check_box_list:
-        #         i.pack_forget()    # forget checkbutton
-        #         # i.destroy()        # use destroy if you dont need those checkbuttons in future
-        #     clear()
+        def clear():
+            for item in check_buttons:
+                item.deselect()
+            print_log(f"reset check boxes.")
 
         # 下面是俩个并排的按钮，分别是“恢复默认”，“确认”
-        tk.Button(window, text="恢复默认").grid(row=n, column=1)
+        tk.Button(window, text="恢复默认", command=clear).grid(row=n, column=1)
         tk.Button(window, text="确认", command=button_Click).grid(row=n, column=2)
         
         return window
@@ -177,7 +192,7 @@ class DetailPage:
         ttk.Separator(left_tree, orient="horizontal").pack(fill="x")
         
         left_panel_item = tk.Frame(left_panel)
-        left_panel_item = cls.full_button(left_panel_item)
+        left_panel_item = cls.full_button(window=left_panel_item, transactions=transactions)
         left_panel_item.pack()
     
         # 右侧上方实现表格
