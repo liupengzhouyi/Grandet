@@ -35,9 +35,14 @@ class DetailPage:
                 date_info.append(str(transaction.time_.day))
                 time_info.append(transaction.time_.get_time_info_as_number())
                 value_info.append(float(transaction.amount))
+                
         print_log(f"data size: {str(len(date_info))}")
         print_log(f"time size: {str(len(time_info))}")
         print_log(f"value size: {str(len(value_info))}")
+        date_info.reverse()
+        time_info.reverse()
+        value_info.reverse()
+        color_info.reverse()
         return date_info, time_info, value_info, color_info
 
 
@@ -90,17 +95,21 @@ class DetailPage:
                             '医疗健康', '数码电器', '其他', '家居家装', '母婴亲子', '运动户外', '保险', '交易类型', '商户消费',
                             '转账', '微信红包（单发）', '扫二维码付款', '转账-退款', '微信红包', '零钱提现', '零钱充值', '群收款',
                             '退款', '微信红包（群红包）', '二维码收款', ]
-        
+        target_type_codes = []
         number_of_line = 3
         n = 0
         j = 0
-        for item in check_button_text:
-            tk.Checkbutton(window, text=item).grid(row=n, column=j)
+        checkboxes = {}
+        for index, item in enumerate(check_button_text):
+            checkboxes[index] = tk.BooleanVar(window)
+            temp_check_button = tk.Checkbutton(window, text=item, variable=checkboxes[index])
+            temp_check_button.grid(row=n, column=j)
+            
             j += 1
             if j == number_of_line:
                 j = 0
                 n += 1
-                
+            
         # 画一个分界线
         # n = int(len(check_button_text) / number_of_line)
         n = n + 1
@@ -109,7 +118,7 @@ class DetailPage:
         
         radio_text = ["柱状图", "折线图", "频率图", "饼图"]
         # 下边是三个Radiobutton
-        radio_var = tk.StringVar()
+        radio_var = tk.StringVar(window)
         for i, item in enumerate(radio_text):
             tk.Radiobutton(window, text=item, variable=radio_var, value=f"选择{i + 1}").grid(row=n, column=i)
         n = n + 1
@@ -118,12 +127,25 @@ class DetailPage:
         ttk.Separator(window, orient="horizontal").grid(row=n, column=0, columnspan=4, sticky="ew")
         n = n + 1
 
+        def button_Click(event=None):
+            print(len(checkboxes.keys()))
+            for i in checkboxes.keys():           # 检查此字典的关键字,同: for i in checkboxes:
+                if checkboxes[i].get() == True:   # 若被选中则执行
+                    print(f"{str(i)}: {str(checkboxes[i].get())}", end=", ")
+            print()
+            print(radio_var.get())
+        
+        # def clear():
+        #     for i in check_box_list:
+        #         i.pack_forget()    # forget checkbutton
+        #         # i.destroy()        # use destroy if you dont need those checkbuttons in future
+        #     clear()
+
         # 下面是俩个并排的按钮，分别是“恢复默认”，“确认”
         tk.Button(window, text="恢复默认").grid(row=n, column=1)
-        tk.Button(window, text="确认").grid(row=n, column=2)
+        tk.Button(window, text="确认", command=button_Click).grid(row=n, column=2)
         
         return window
-        
     
     @classmethod
     def show_detail_page(cls, transactions: list, window_title: str="详情窗口"):
@@ -157,17 +179,7 @@ class DetailPage:
         left_panel_item = tk.Frame(left_panel)
         left_panel_item = cls.full_button(left_panel_item)
         left_panel_item.pack()
-        # # 左侧下方显示多个复选框
-        # check_var1 = tk.BooleanVar()
-        # check_var2 = tk.BooleanVar()
-        # check_var3 = tk.BooleanVar()
-        # check_button1 = tk.Checkbutton(left_panel, text="选项1", variable=check_var1)
-        # check_button2 = tk.Checkbutton(left_panel, text="选项2", variable=check_var2)
-        # check_button3 = tk.Checkbutton(left_panel, text="选项3", variable=check_var3)
-        # check_button1.pack()
-        # check_button2.pack()
-        # check_button3.pack()
-
+    
         # 右侧上方实现表格
         tree = ttk.Treeview(right_panel)
         yscrollbar = ttk.Scrollbar(right_panel)
