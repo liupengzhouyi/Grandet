@@ -4,6 +4,9 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
 
+from functions.log4py import print_log
+from modules.transaction import Transaction
+
 from matplotlib.figure import Figure
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,11 +15,46 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tools.analysis_transactions import AnalysisTransactions
 from gui.ui.show_transactions_as_table import ShowTransaction
 
+
 class DetailPage:
     
     def __init__(self) -> None:
         pass
+    
+    
+    @classmethod
+    def get_frequency_data(cls, transactions: list):
+        
+        date_info = []
+        time_info = []
+        value_info = []
+        color_info = []
+        for transaction in transactions:
+            if isinstance(transaction, Transaction):
+                
+                date_info.append(str(transaction.time_.day))
+                time_info.append(transaction.time_.get_time_info_as_number())
+                value_info.append(float(transaction.amount))
+        print_log(f"data size: {str(len(date_info))}")
+        print_log(f"time size: {str(len(time_info))}")
+        print_log(f"value size: {str(len(value_info))}")
+        return date_info, time_info, value_info, color_info
 
+
+    @classmethod
+    def genartion_frequency_image(cls, transactions: list) -> Figure:
+        
+        date_info, time_info, value_info, color_info = cls.get_frequency_data(transactions=transactions)
+        fig = Figure(figsize=(5, 4), dpi=100)
+        ax = fig.add_subplot(111)
+        # 数据
+        if len(date_info) != len(value_info) or len(time_info) != len(value_info):
+            ax.scatter(date_info, time_info)
+        else:
+            new_value_info = np.array(value_info)
+            ax.scatter(date_info, time_info, s=new_value_info)
+        return fig
+            
 
     @classmethod
     def setting_tree_view_for_transaction(cls, transactions: list, left_tree: ttk.Treeview) -> ttk.Treeview:
@@ -85,8 +123,8 @@ class DetailPage:
         tk.Button(window, text="确认").grid(row=n, column=2)
         
         return window
-
-
+        
+    
     @classmethod
     def show_detail_page(cls, transactions: list, window_title: str="详情窗口"):
         
@@ -141,25 +179,9 @@ class DetailPage:
 
         # 右侧添加分界线
         ttk.Separator(right_panel, orient="horizontal").pack(fill="x")
-
-
-        years_lable = [1, 2, 3]
-        expenditure_counts = [1, 3, 5]
-        income_counts = [2, 4, 6]
         
-        fig = Figure(figsize=(5, 4), dpi=100)
-        ax = fig.add_subplot(111)
-        # 数据
-        N = len(years_lable)
-        ind = np.arange(N) # x 轴的位置
-        width = 0.15 # 柱子的宽度
-        ax.set_xticks(ind)
-        ax.set_xticklabels(tuple(years_lable))
-        ax.legend()
-    
-        rects1 = ax.bar(ind, tuple(expenditure_counts), width, label='expend')
-        rects2 = ax.bar(ind + width, tuple(income_counts), width, label='income')
-    
+        fig = cls.genartion_frequency_image(transactions=transactions)
+        
         canvas = FigureCanvasTkAgg(fig, master=right_panel)
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)

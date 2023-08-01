@@ -41,6 +41,10 @@ class TransactionDateTime:
     def get_date_info_as_str(self) -> str:
         
          return f"{self.year}-{self.month}-{self.day}"
+     
+    def get_time_info_as_number(self) -> float:
+        
+        return (self.hour * 10000 + self.minute * 100 + self.second) / 10000
         
     def show(self):
         
