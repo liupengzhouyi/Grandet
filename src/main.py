@@ -60,8 +60,7 @@ if __name__ == "__main__":
         head = InjectStyle.add_source_in_head(transaction_head=head, source="来源")
         print(head)
         
-        target_transactions = analysis_all_bills(target_csv_files=target_csv_files, 
-                                                 csv_folder_path=csv_folder_path)
+        target_transactions = analysis_all_bills(target_csv_files=target_csv_files, csv_folder_path=csv_folder_path)
 
         # rules = []
         # rules.append(FilterRulesFactory(name="交易对方", operation="包含", value="姜威"))

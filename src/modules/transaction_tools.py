@@ -6,7 +6,6 @@ from functools import cmp_to_key
 from functions.log4py import print_log
 from modules.transaction import Transaction
 from modules.transaction_datetime import TransactionDateTime
-from functions.log4py import print_log
 from functions.read_table import ReadTransactionTable
 from functions.write_table import WriteTransactionTable
 
@@ -42,18 +41,16 @@ def cmp_transaction_by_datetime(x: Transaction, y: Transaction) -> int:
 def delete_same_transaction(transactions: list) -> list:
     
     new_transactions = []
-        
+    transaction_ids = []
     for item in transactions:
-        if len(new_transactions) == 0:
-            new_transactions.append(item)
-        else:
-            last_item  = new_transactions[-1]
-            check_date_time = last_item.get_datetime().get_v_str() == item.get_datetime().get_v_str()
-            check_get_transaction_number = last_item.get_transaction_number() == item.get_transaction_number()
-            if check_date_time and check_get_transaction_number:
-                continue
-            else:
+        if isinstance(item, Transaction):
+            transaction_id = str(item.transaction_number).replace(" ", "").replace("\t", "")
+            
+            if transaction_id not in transaction_ids:
+                transaction_ids.append(transaction_id)
                 new_transactions.append(item)
+            else:
+                print_log(f"{item.time_.get_v_str()}: {item.transaction_number}, has same transaction number.")
     return new_transactions
 
 def check_number_is_float(number: str) -> bool:
