@@ -163,12 +163,6 @@ class DetailPage:
         canvas = FigureCanvasTkAgg(fig, master=right_panel)
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-    
-        # 右侧下方插入图片
-        # image = Image.open("/Users/pengliu/Code/Grandet/src/tests/iii.png")
-        # photo = ImageTk.PhotoImage(image)
-        # image_label = tk.Label(right_panel, image=photo)
-        # image_label.pack()
 
         # 运行窗口
         window.mainloop()
