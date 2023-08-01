@@ -240,7 +240,16 @@ class TransactionsTools:
         cls.show_transactions_in_terminal(transactions=transactions)
         reversed(transactions)
         ShowTransaction.show_transactions(transactions=transactions)
+      
+    @classmethod
+    def filter_transactions_simple(cls, transactions: list, type_word: list) -> list:
         
+        target_transaction = []
+        for transaction in transactions:
+            if isinstance(transaction, Transaction):
+                if str(transaction.type_).replace(" ", "") in type_word:
+                    target_transaction.append(transaction)
+        return target_transaction
     
     @classmethod
     def filter_transactions(cls, transactions: list, rules: list) -> list:
