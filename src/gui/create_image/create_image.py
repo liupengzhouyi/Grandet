@@ -8,9 +8,19 @@ import matplotlib as mpl
 
 class GenarationImage:
     
+    
     def __init__(self) -> None:
          pass
-     
+    
+    
+    # def genaration_image(self, values: list, labels: list=None) -> None:
+
+    #     x = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+    #     y = np.array([1, 4, 9, 16, 7, 11, 23, 18])
+
+    #     plt.scatter(x, y)
+    #     plt.show()
+
     @classmethod
     def genaration_month_image(cls, values: list, labels: list=None):
         
