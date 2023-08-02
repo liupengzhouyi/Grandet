@@ -14,11 +14,12 @@ from functions.log4py import print_log
 from gui.ui.globel_varable import set_value
 from gui.ui.globel_varable import get_value
 
-from gui.ui.detail_page import DetailPage
+from gui.ui.detail_page import show_detail_page
 
 from functions.read_table import ReadTransactionTable
 from functions.log4py import print_log
 
+from modules.transaction import Transaction
 from modules.transaction import YearsTransaction
 from modules.transaction import MonthsTransaction
 from modules.transaction import DaysTransaction
@@ -113,7 +114,7 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         if isinstance(days_transaction, DaysTransaction):
             target_transactions = days_transaction.get_target_transactions(month)
         
-        day_button = tk.Button(month_row, text="分析", command=lambda ts=target_transactions: DetailPage.show_detail_page(ts, f"分析"), width=10)
+        day_button = tk.Button(month_row, text="分析", command=lambda ts=target_transactions: show_detail_page(ts, f"分析"), width=10)
         day_button.pack(side="right")
         
         details_button = tk.Button(month_row, text="详情", command=lambda ts=target_transactions: TransactionsTools.show_transactions_in_window(ts), width=10)
@@ -248,3 +249,27 @@ def create_grandet_bills_window_by_month(year: int, month: int):
     canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
     root.mainloop()
+
+
+def get_transcations_by_start_date_and_end_date(start_date: str, end_date: str):
+    
+    all_transactions = get_value("all_transactions_as_list")
+    new_transactions = []
+    for transaction in all_transactions:
+        if isinstance(transaction, Transaction):
+            a = int(transaction.time_.get_date_info_as_str().replace("-", "")) >= int(start_date.replace("-", ""))
+            b = int(transaction.time_.get_date_info_as_str().replace("-", "")) <= int(end_date.replace("-", ""))
+            if a and b:
+                new_transactions.append(transaction)
+    return new_transactions
+    
+
+def create_grandet_bills_window_by_taregt_data(start_date: str, end_date: str):
+    
+    # 标题
+    title = f"葛朗台{start_date}至{end_date}的账单"
+
+    transactions = get_transcations_by_start_date_and_end_date(start_date=start_date, end_date=end_date)
+
+    show_detail_page(transactions=transactions, window_title=title)
+    

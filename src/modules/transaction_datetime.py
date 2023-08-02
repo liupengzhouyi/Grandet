@@ -40,7 +40,13 @@ class TransactionDateTime:
 
     def get_date_info_as_str(self) -> str:
         
-         return f"{self.year}-{self.month}-{self.day}"
+        month_ = str(self.month)
+        day_ = str(self.day)
+        if len(str(self.month)) == 1:
+            month_ = "0" + str(self.month)
+        if len(str(self.day)) == 1:
+            day_ = "0" + str(self.day)
+        return f"{self.year}-{month_}-{day_}"
      
     def get_time_info_as_number(self) -> float:
         
