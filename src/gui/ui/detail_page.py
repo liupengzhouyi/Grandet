@@ -11,6 +11,7 @@ from modules.transactions_tools import TransactionsTools
 from matplotlib.figure import Figure
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from tools.analysis_transactions import AnalysisTransactions
@@ -26,6 +27,23 @@ class DetailPage:
     @classmethod
     def get_frequency_data(cls, transactions: list):
         
+        colors = ["#B0C4DE", "#FF00FF", "#1E90FF", "#FA8072", "#EEE8AA", "#FF1493", "#7B68EE",
+                  "#FFC0CB", "#696969", "#556B2F", "#CD853F", "#000080", "#32CD32", "#7F007F",
+                  "#B03060", "#800000", "#483D8B", "#008000", "#3CB371", "#008B8B", "#FF0000",
+                  "#FF8C00", "#FFD700", "#00FF00", "#9400D3", "#00FA9A", "#DC143C", "#00FFFF",
+                  "#00BFFF", "#0000FF", "#ADFF2F", "#DA70D6", '#e6194B', '#3cb44b', '#ffe119',
+                  '#4363d8', '#f58231', '#911eb4', '#42d4f4', '#f032e6', '#bfef45', '#fabed4',
+                  '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000', '#aaffc3', '#808000',
+                  '#ffd8b1', '#000075', '#a9a9a9', '#ffffff', '#000000', '#FF0000', '#FFA500',
+                  '#FFFF00', '#00FF00', '#228B22']
+        # n = 50
+        # new_colors = [cm.jet(x) for x in np.linspace(0, 1, n)]
+        # colors.extend(new_colors)
+        
+        # print(colors)
+        color_index = 0
+        type_indexs = []
+        
         date_info = []
         time_info = []
         value_info = []
@@ -36,6 +54,13 @@ class DetailPage:
                 date_info.append(str(transaction.time_.day))
                 time_info.append(transaction.time_.get_time_info_as_number())
                 value_info.append(float(transaction.amount))
+                if transaction.type_ not in type_indexs:
+                    type_indexs.append(transaction.type_)
+                    color_info.append(colors[color_index])
+                    color_index += 1
+                else:
+                    temp_index = type_indexs.index(transaction.type_)
+                    color_info.append(colors[temp_index])
                 
         print_log(f"data size: {str(len(date_info))}")
         print_log(f"time size: {str(len(time_info))}")
@@ -48,17 +73,22 @@ class DetailPage:
 
 
     @classmethod
-    def genartion_frequency_image(cls, transactions: list) -> Figure:
+    def genartion_frequency_image(cls, transactions: list, take_size_effect: bool=True) -> Figure:
         
         date_info, time_info, value_info, color_info = cls.get_frequency_data(transactions=transactions)
         fig = Figure(figsize=(5, 4), dpi=100)
         ax = fig.add_subplot(111)
+
+
         # 数据
         if len(date_info) != len(value_info) or len(time_info) != len(value_info):
             ax.scatter(date_info, time_info)
         else:
             new_value_info = np.array(value_info)
-            ax.scatter(date_info, time_info, s=new_value_info)
+            if take_size_effect:
+                ax.scatter(date_info, time_info, s=new_value_info, c=color_info)
+            else:
+                ax.scatter(date_info, time_info, c=color_info)
         return fig
     
     
@@ -172,7 +202,7 @@ class DetailPage:
         ttk.Separator(window, orient="horizontal").grid(row=n, column=0, columnspan=4, sticky="ew")
         n = n + 2
         
-        radio_text = ["柱状图", "折线图", "频率图", "饼图"]
+        radio_text = ["柱状图", "散点图", "频率图", "饼图", "折线图"]
         # 下边是三个Radiobutton
         radio_var = tk.StringVar(window)
         for i, item in enumerate(radio_text):
@@ -268,6 +298,10 @@ class DetailPage:
 
         # fig = cls.genartion_pie_image(transactions=transactions)
         fig = cls.genartion_frequency_image(transactions=transactions)
+        if image_index == 2:
+            fig = cls.genartion_frequency_image(transactions=transactions, take_size_effect=False)
+        if image_index == 3:
+            fig = cls.genartion_frequency_image(transactions=transactions, take_size_effect=True)
         if image_index == 4:
             fig = cls.genartion_pie_image(transactions=transactions)
         
