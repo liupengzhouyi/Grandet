@@ -60,6 +60,60 @@ class DetailPage:
             new_value_info = np.array(value_info)
             ax.scatter(date_info, time_info, s=new_value_info)
         return fig
+    
+    
+    @classmethod
+    def get_pie_data(cls, transactions: list) -> dict:
+        
+        datas = {}
+        for transaction in transactions:
+            if isinstance(transaction, Transaction):
+                if transaction.income_expense not in ["支出"]:
+                    continue
+                temp_type = transaction.type_
+                if temp_type not in datas.keys():
+                    datas[temp_type] = []
+                    datas[temp_type].append(transaction)
+                else:
+                    datas[temp_type].append(transaction)
+        return datas
+    
+    
+    @classmethod
+    def genartion_pie_image(cls, transactions: list) -> Figure:
+        
+        date_infos = cls.get_pie_data(transactions=transactions)
+        fig = Figure(figsize=(5, 4), dpi=100)
+        ax = fig.add_subplot(111)
+        sizes = []
+        labels = []
+        for label in date_infos.keys():
+            all_count = 0.0
+            for transaction in date_infos[label]:
+                all_count += float(transaction.amount)
+            sizes.append(all_count)
+            labels.append(label)
+            
+        # ax.pie()
+        ax.pie(sizes, labels=labels)
+        # # 数据
+        # if len(date_info) != len(value_info) or len(time_info) != len(value_info):
+        #     ax.scatter(date_info, time_info)
+        # else:
+        #     new_value_info = np.array(value_info)
+        #     ax.scatter(date_info, time_info, s=new_value_info)
+        # return fig
+
+        # # 数据
+        # sizes = [15, 30, 45, 10]
+        # # 饼图的标签
+        # labels = ['A', 'B', 'C', 'D']
+        # # 饼图的颜色
+        # colors = ['yellowgreen', 'gold', 'lightskyblue', 'lightcoral']
+        # # 绘制饼图
+        # plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=90)
+        return fig
+
             
 
     @classmethod
@@ -122,7 +176,7 @@ class DetailPage:
         # 下边是三个Radiobutton
         radio_var = tk.StringVar(window)
         for i, item in enumerate(radio_text):
-            tk.Radiobutton(window, text=item, variable=radio_var, value=f"选择{i + 1}").grid(row=n, column=i)
+            tk.Radiobutton(window, text=item, variable=radio_var, value=f"{i + 1}").grid(row=n, column=i)
         n = n + 1
         
         # 画一个分界线
@@ -147,7 +201,12 @@ class DetailPage:
                 sub_title_name += f"{item}-"
             print_log(sub_title_name)
             if len(filter_words) > 0:
-                cls.show_detail_page(transactions=new_transactions, window_title=sub_title_name)
+                image_index = -1
+                if str(radio_var.get()).isdigit():
+                    image_index = int(radio_var.get())
+                cls.show_detail_page(transactions=new_transactions,
+                                     window_title=sub_title_name,
+                                     image_index=image_index)
             
             
         
@@ -163,7 +222,7 @@ class DetailPage:
         return window
     
     @classmethod
-    def show_detail_page(cls, transactions: list, window_title: str="详情窗口"):
+    def show_detail_page(cls, transactions: list, window_title: str="详情窗口", image_index: int="-1"):
         
         # 创建窗口
         window = tk.Tk()
@@ -206,8 +265,11 @@ class DetailPage:
 
         # 右侧添加分界线
         ttk.Separator(right_panel, orient="horizontal").pack(fill="x")
-        
+
+        # fig = cls.genartion_pie_image(transactions=transactions)
         fig = cls.genartion_frequency_image(transactions=transactions)
+        if image_index == 4:
+            fig = cls.genartion_pie_image(transactions=transactions)
         
         canvas = FigureCanvasTkAgg(fig, master=right_panel)
         canvas.draw()
