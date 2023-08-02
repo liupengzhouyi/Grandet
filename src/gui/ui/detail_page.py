@@ -36,11 +36,7 @@ class DetailPage:
                   '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000', '#aaffc3', '#808000',
                   '#ffd8b1', '#000075', '#a9a9a9', '#ffffff', '#000000', '#FF0000', '#FFA500',
                   '#FFFF00', '#00FF00', '#228B22']
-        # n = 50
-        # new_colors = [cm.jet(x) for x in np.linspace(0, 1, n)]
-        # colors.extend(new_colors)
         
-        # print(colors)
         color_index = 0
         type_indexs = []
         
@@ -123,25 +119,8 @@ class DetailPage:
                 all_count += float(transaction.amount)
             sizes.append(all_count)
             labels.append(label)
-            
-        # ax.pie()
-        ax.pie(sizes, labels=labels)
-        # # 数据
-        # if len(date_info) != len(value_info) or len(time_info) != len(value_info):
-        #     ax.scatter(date_info, time_info)
-        # else:
-        #     new_value_info = np.array(value_info)
-        #     ax.scatter(date_info, time_info, s=new_value_info)
-        # return fig
 
-        # # 数据
-        # sizes = [15, 30, 45, 10]
-        # # 饼图的标签
-        # labels = ['A', 'B', 'C', 'D']
-        # # 饼图的颜色
-        # colors = ['yellowgreen', 'gold', 'lightskyblue', 'lightcoral']
-        # # 绘制饼图
-        # plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=90)
+        ax.pie(sizes, labels=labels)
         return fig
 
             
