@@ -8,7 +8,8 @@ from modules.transaction import Transaction
 from modules.transaction_datetime import TransactionDateTime
 from functions.read_table import ReadTransactionTable
 from functions.write_table import WriteTransactionTable
-
+from gui.ui.globel_varable import set_value
+from gui.ui.globel_varable import get_value
 
 def check_dt1_dt2(dt1: TransactionDateTime, dt2: TransactionDateTime) -> bool:
     
@@ -52,6 +53,7 @@ def delete_same_transaction(transactions: list) -> list:
             else:
                 print_log(f"{item.time_.get_v_str()}: {item.transaction_number}, has same transaction number.")
     return new_transactions
+
 
 def check_number_is_float(number: str) -> bool:
     
@@ -100,6 +102,7 @@ def analysis_all_bills(target_csv_files: list, csv_folder_path: str) -> list:
     target_transactions = delete_same_transaction(all_transactions)
     print_log("All transactions count: " + str(len(target_transactions)) + ".")
     print_log("All transactions count: " + str(len(all_transactions)) + ".")
+    set_value("all_transactions_as_list", target_transactions)
     return target_transactions
 
 

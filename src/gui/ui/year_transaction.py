@@ -14,7 +14,7 @@ from functions.log4py import print_log
 from gui.ui.globel_varable import set_value
 from gui.ui.globel_varable import get_value
 from gui.ui.month_transaction import create_grandet_bills_window_by_month
-from gui.ui.detail_page import DetailPage
+from gui.ui.detail_page import show_detail_page
 
 from functions.read_table import ReadTransactionTable
 from functions.log4py import print_log
@@ -81,6 +81,9 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
 
     details_header = tk.Label(header, text=head_words[6], width=10)
     details_header.pack(side="right")
+    
+    details_header = tk.Label(header, text=head_words[7], width=10)
+    details_header.pack(side="right")
 
     # 分割线
     separator = tk.Frame(yearly_summary, height=2, bd=1, relief="sunken")
@@ -108,12 +111,12 @@ def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: lis
         transfer_label = tk.Label(month_row, text=str(all_transfer_count), width=20)
         transfer_label.pack(side="left")
 
-        month_button = tk.Button(month_row, text="详细", command=lambda y=year, m=month: create_grandet_bills_window_by_month(y, m), width=10)
+        month_button = tk.Button(month_row, text="详细", command=lambda y=year, m=month: create_grandet_bills_window_by_month(y, m), width=10, bg = "blue")
         month_button.pack(side="right")
         
         target_transactions = ExtractTransactions.extract_by_year_month(year=year, month=month)
         title = f"{str(year)}年-{str(month)}月 账单详情"
-        details_button = tk.Button(month_row, text="分析", command=lambda ts=target_transactions, t=title: DetailPage.show_detail_page(ts, t), width=10)
+        details_button = tk.Button(month_row, text="分析", command=lambda ts=target_transactions, t=title: show_detail_page(ts, t), width=10, bg = "purple")
         details_button.pack(side="right")
 
     return yearly_summary
@@ -180,7 +183,7 @@ def create_grandet_bills_window_by_year(year: int):
     # 标题
     title = f"葛朗台{str(year)}年的账单"
     # 表头
-    head_words = ["月份", "花销总额", "支出交易笔数", "收入交易笔数", "个人转账交易笔数", "交易总笔数", "详情"]
+    head_words = ["月份", "花销总额", "支出交易笔数", "收入交易笔数", "个人转账交易笔数", "交易总笔数", "分析", "详情"]
     files, months = get_data_by_year(year)
 
     root = tk.Tk()

@@ -3,7 +3,10 @@
 
 import os
 import tkinter as tk  # 使用Tkinter前需要先导入
+from tkinter import ttk
 from PIL import Image, ImageTk
+import datetime
+from tkcalendar import Calendar, DateEntry
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,12 +16,19 @@ from matplotlib.figure import Figure
 from functions.log4py import print_log
 from gui.ui.globel_varable import set_value
 from gui.ui.globel_varable import get_value
-
+from gui.ui.month_transaction import create_grandet_bills_window_by_taregt_data
 from gui.ui.year_transaction import create_grandet_bills_window_by_year
 
 from functions.read_table import ReadTransactionTable
 from modules.transaction import YearsTransaction
 from modules.transactions_tools import TransactionsTools
+
+
+def show_target_transaction_by_date(s: str, e: str):
+    
+    print_log(f"Start log: {s}")
+    print_log(f"End log: {e}")
+    create_grandet_bills_window_by_taregt_data(start_date=s, end_date=e)
 
 
 def fill_bill_files(bill_frame: tk.Frame, file_names: list) -> tk.Frame:
@@ -41,8 +51,33 @@ def fill_bill_files(bill_frame: tk.Frame, file_names: list) -> tk.Frame:
     log_text = tk.Text(bill_frame, height=10)
     log_text.pack(side="bottom", fill="both", expand=True)
     
-    return bill_frame
+    time_label = tk.Label(bill_frame, text="⌚️ 时间截取")
+    time_label.pack(side="top")
+    
+    s_data = ''
+    e_data = ''
+    
+    start_date_lable = tk.Label(bill_frame, text="开始时间[yyyy-mm-dd]")
+    start_date_lable.pack(side="top")
+    start_date = tk.Entry(bill_frame)
+    start_date.pack(side="top")
+    
+    end_date_lable = tk.Label(bill_frame, text="结束时间[yyyy-mm-dd]")
+    end_date_lable.pack(side="top")
+    end_date = tk.Entry(bill_frame)
+    end_date.pack(side="top")
 
+    def get_data():
+        
+        s_data = start_date.get()
+        e_data = end_date.get()
+        show_target_transaction_by_date(s_data, e_data)
+    
+    send_ok = tk.Button(bill_frame, text="确认", command=get_data)
+    send_ok.pack(side="top")
+    
+    return bill_frame
+    
 
 def fill_bill_information(yearly_summary: tk.Frame, root: tk.Tk, head_words: list, years: list, image_path: str) -> tk.Frame:
     
