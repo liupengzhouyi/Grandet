@@ -3,6 +3,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import ImageTk, Image
+import csv
 
 from functions.log4py import print_log
 from modules.transaction import Transaction
@@ -85,7 +86,7 @@ def get_pie_data(transactions: list) -> dict:
     datas = {}
     for transaction in transactions:
         if isinstance(transaction, Transaction):
-            if transaction.income_expense not in ["支出"]:
+            if str(transaction.income_expense).replace(" ", "") not in ["支出"]:
                 continue
             temp_type = transaction.type_
             if temp_type not in datas.keys():
@@ -113,6 +114,51 @@ def genartion_pie_image(transactions: list) -> Figure:
     ax.pie(sizes, labels=labels)
     return fig
 
+
+def get_line_chart_data(transactions: list) -> dict:
+    
+    datas = {}
+    for transaction in transactions:
+        if isinstance(transaction, Transaction):
+            if str(transaction.income_expense).replace(" ", "") not in ["支出"]:
+                continue
+            # temp_type = transaction.type_
+            data_str = transaction.time_.get_date_info_as_str()
+            if data_str not in datas.keys():
+                datas[data_str] = []
+                datas[data_str].append(transaction)
+            else:
+                datas[data_str].append(transaction)
+    return datas
+    
+    
+def genartion_line_chart_image(transactions: list) -> Figure:
+    
+    date_infos = get_line_chart_data(transactions=transactions)
+    fig = Figure(figsize=(5, 4), dpi=100)
+    ax = fig.add_subplot(111)
+    datas = []
+    new_delete_year = []
+    nums = []
+    for label in date_infos.keys():
+        all_count = 0.0
+        print("data:", end=":")
+        for transaction in date_infos[label]:
+            all_count += float(transaction.amount)
+            print(transaction.amount, end=", ")
+        print(f"---{str(all_count)}")
+        nums.append(float(round(all_count, 2)))
+        datas.append(label)
+        new_delete_year.append(label.split("-")[1] + "-" + label.split("-")[2])
+
+    # 创建折线图
+    ax.plot(new_delete_year, nums)
+    for i, txt in enumerate(nums):
+        ax.annotate(txt, (new_delete_year[i], nums[i]), xytext=(5,0), textcoords='offset points')
+
+    return fig
+    
+    
 def setting_tree_view_for_transaction(transactions: list, left_tree: ttk.Treeview) -> ttk.Treeview:
     
     # 支出
@@ -210,13 +256,31 @@ def full_button(window: tk.Frame, transactions: list) -> tk.Frame:
             item.deselect()
         print_log(f"reset check boxes.")
         
+    def save_to_csv():
+        
+        print_log(f"save to csv.")
+        transactions_info = []
+        for transaction in transactions:
+            if isinstance(transaction, Transaction):
+                transaction_info = transaction.to_list()
+                transactions_info.append(transaction_info)
+                
+        with open('data.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            
+            # 写入数据
+            writer.writerows(transactions_info)
+
+        
     # 下面是俩个并排的按钮，分别是“恢复默认”，“确认”
+    save_to_csv_button = tk.Button(window, text="保存", command=save_to_csv)
     select_all_button = tk.Button(window, text="全选", command=select_all)
     deselect_all_button = tk.Button(window, text="取消", command=clear)
     go_button = tk.Button(window, text="确认", command=button_Click)
-    select_all_button.grid(row=n, column=1)
-    deselect_all_button.grid(row=n, column=2)
-    go_button.grid(row=n, column=3)
+    save_to_csv_button.grid(row=n, column=1)
+    select_all_button.grid(row=n, column=2)
+    deselect_all_button.grid(row=n, column=3)
+    go_button.grid(row=n, column=4)
     
     return window
     
@@ -265,6 +329,9 @@ def show_detail_page(transactions: list, window_title: str="详情窗口", image
         fig = genartion_frequency_image(transactions=transactions, take_size_effect=True)
     if image_index == 4:
         fig = genartion_pie_image(transactions=transactions)
+    if image_index == 5:
+        print_log("折线图")
+        fig = genartion_line_chart_image(transactions=transactions)
     
     canvas = FigureCanvasTkAgg(fig, master=right_panel)
     canvas.draw()
