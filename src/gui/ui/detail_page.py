@@ -151,6 +151,8 @@ def genartion_line_chart_image(transactions: list) -> Figure:
         datas.append(label)
         new_delete_year.append(label.split("-")[1] + "-" + label.split("-")[2])
 
+    new_delete_year.reverse()
+    nums.reverse()
     # 创建折线图
     ax.plot(new_delete_year, nums)
     for i, txt in enumerate(nums):
@@ -260,7 +262,7 @@ def full_button(window: tk.Frame, transactions: list) -> tk.Frame:
         
         print_log(f"save to csv.")
         transactions_info = []
-        for transaction in transactions:
+        for transaction in reversed(transactions):
             if isinstance(transaction, Transaction):
                 transaction_info = transaction.to_list()
                 transactions_info.append(transaction_info)
