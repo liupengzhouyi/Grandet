@@ -18,12 +18,20 @@
 
 ## 自定义查询时间
 
+## 散点图
+
+![img](./images/index_06.png)
+
 ## 频率图
 
+![img](./images/index_07.png)
+
 ## 饼图
+
+![img](./images/index_08.png)
 
 ## 单独分析某几类
 
 ## 折线图
 
-![img](./images/index_06.png)
+![img](./images/index_09.png)
