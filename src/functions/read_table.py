@@ -36,6 +36,7 @@ class ReadTransactionTable:
             return csv_file_paths
         return csv_file_paths
 
+
     @classmethod
     def flitter_csv_file(cls, csv_files: list) -> list:
         

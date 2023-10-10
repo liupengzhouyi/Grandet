@@ -6,7 +6,8 @@ _global_dict = {}
 
 def set_value(key, value):
     #定义一个全局变量
-    print(f"setting value: {key}: {str(value)}")
+    
+    # print(f"setting value: {key}: {str(value)}")
     _global_dict[key] = value
 
 

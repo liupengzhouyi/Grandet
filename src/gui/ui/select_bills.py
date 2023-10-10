@@ -13,8 +13,8 @@ from gui.ui.globel_varable import get_value
 from gui.ui.frist_page import create_grandet_bills_window
 from tools.analysis_transactions import AnalysisTransactions
 from modules.transaction_tools import analysis_all_bills
-    
-    
+
+
 def select_folder_path(bills_folder_bable: tk.Label):
 
     folder_name = tkinter.filedialog.askdirectory()
@@ -63,8 +63,7 @@ def analysis_bills():
     
     bills_folder_path = get_value("bills_folder")
         
-    taregt_transactions = analysis_all_bills(target_csv_files=bills_files,
-                                             csv_folder_path=bills_folder_path)
+    taregt_transactions = analysis_all_bills(target_csv_files=bills_files, csv_folder_path=bills_folder_path)
     
     analysis = AnalysisTransactions(transactions=taregt_transactions)
         

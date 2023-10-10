@@ -3,10 +3,12 @@
 rules = {
     "住宿费用": {
         "酒店住宿": {
-             "0": {"name": "交易分类", "operation": "包含", "value": "住宿费用"},
+            "0": {"name": "交易分类", "operation": "包含", "value": "住宿费用"},
         },
         "房租": {
-            
+            "0": {"name": "收款人", "operation": "包含", "value": "房东"},
+            "1": {"name": "收款人", "operation": "包含", "value": ""},
+            "2": {"name": "收款人", "operation": "包含", "value": ""},
         },
         "中介担保": {
             
