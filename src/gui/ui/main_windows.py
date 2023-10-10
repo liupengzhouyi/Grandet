@@ -115,16 +115,6 @@ def run_main_windows():
     l = tk.Label(window, text='欢迎您来到年度消费冠军评选系统，谁是今年的消费大魔王呢？', bg='green', font=('Arial', 12), width=50, height=2)
     # 说明： bg为背景，font为字体，width为长，height为高，这里的长和高是字符的长和高，比如height=2,就是标签有2个字符这么高
     l.pack(expand=1)
-
-    # # 第4步，在图形界面上设定输入框控件entry并放置控件
-    # bills_file_path = tk.Entry(window, show=None, font=('Arial', 14))  # 显示成明文形式
-    # bills_file_path.pack()
-    
-    # btn = tk.Button(window,text="弹出选择文件对话框",command=chooes_bills_folder)
-    # btn.pack()
-    
-    # analysis_bills_btn = tk.Button(window,text="解析账单文件",command=analysis_bills)
-    # analysis_bills_btn.pack()
     
     info = ''
     start_time_text = tk.Entry(window, width=20)

@@ -8,36 +8,79 @@ from modules.transaction import Transaction
 from modules.transaction import DaysTransaction
 from modules.transaction import MonthsTransaction
 from modules.transaction import YearsTransaction
-from gui.ui.show_transactions_as_table import ShowTransaction
+from gui.ui.show_transactions_as_table import show_transactions
 
 from modules.transaction_filter import FilterRules
 from tools.extraction_rules import ExtrcationRules
 
 class TransactionsTools:
+    """
+    用于处理交易数据的工具类，提供了一系列方法用于分析、过滤和展示交易数据。
+    """
     
     def __init__(self) -> None:
+        """
+        初始化一个 TransactionsTools 对象。
+        """
+        
         pass
         
     @classmethod
     def get_transactions_size(cls, target_transaction: YearsTransaction) -> int:
+        """
+        获取年度交易数据中的交易数量。
+
+        Args:
+            target_transaction (YearsTransaction): 年度交易数据对象。
+
+        Returns:
+            int: 年度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_transactions_size(cls, target_transaction: MonthsTransaction) -> int:
+        """
+        获取月度交易数据中的交易数量。
+
+        Args:
+            target_transaction (MonthsTransaction): 月度交易数据对象。
+
+        Returns:
+            int: 月度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_transactions_size(cls, target_transaction: DaysTransaction) -> int:
+        """
+        获取日度交易数据中的交易数量。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            int: 日度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_summary_count(cls, target_transaction: YearsTransaction) -> int:
+        """
+        获取年度交易数据中支出类型的交易数量。
+
+        Args:
+            target_transaction (YearsTransaction): 年度交易数据对象。
+
+        Returns:
+            int: 年度交易数据中支出类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -49,6 +92,15 @@ class TransactionsTools:
     
     @classmethod
     def get_income_count(cls, target_transaction: YearsTransaction) -> int:
+        """
+        获取年度交易数据中收入类型的交易数量。
+
+        Args:
+            target_transaction (YearsTransaction): 年度交易数据对象。
+
+        Returns:
+            int: 年度交易数据中收入类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -60,6 +112,15 @@ class TransactionsTools:
     
     @classmethod
     def get_transfer_count(cls, target_transaction: YearsTransaction) -> int:
+        """
+        获取年度交易数据中转账类型的交易数量。
+
+        Args:
+            target_transaction (YearsTransaction): 年度交易数据对象。
+
+        Returns:
+            int: 年度交易数据中转账类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -71,6 +132,15 @@ class TransactionsTools:
     
     @classmethod
     def get_amounts(cls, target_transaction: YearsTransaction) -> list:
+        """
+        获取年度交易数据中支出类型交易的金额列表。
+
+        Args:
+            target_transaction (YearsTransaction): 年度交易数据对象。
+
+        Returns:
+            list: 年度交易数据中支出类型交易的金额列表。
+        """
         
         amounts = []
         for transaction in target_transaction.transactions:
@@ -82,24 +152,60 @@ class TransactionsTools:
     
     @classmethod
     def get_transactions_size(cls, target_transaction: MonthsTransaction) -> int:
+        """
+        获取月度交易数据中的交易数量。
+
+        Args:
+            target_transaction (MonthsTransaction): 月度交易数据对象。
+
+        Returns:
+            int: 月度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_transactions_size(cls, target_transaction: MonthsTransaction) -> int:
+        """
+        获取月度交易数据中的交易数量。
+
+        Args:
+            target_transaction (MonthsTransaction): 月度交易数据对象。
+
+        Returns:
+            int: 月度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_transactions_size(cls, target_transaction: DaysTransaction) -> int:
+        """
+        获取日度交易数据中的交易数量。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            int: 日度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_summary_count(cls, target_transaction: MonthsTransaction) -> int:
+        """
+        获取月度交易数据中支出类型的交易数量。
+
+        Args:
+            target_transaction (MonthsTransaction): 月度交易数据对象。
+
+        Returns:
+            int: 月度交易数据中支出类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -111,6 +217,15 @@ class TransactionsTools:
     
     @classmethod
     def get_income_count(cls, target_transaction: MonthsTransaction) -> int:
+        """
+        获取月度交易数据中收入类型的交易数量。
+
+        Args:
+            target_transaction (MonthsTransaction): 月度交易数据对象。
+
+        Returns:
+            int: 月度交易数据中收入类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -122,6 +237,15 @@ class TransactionsTools:
     
     @classmethod
     def get_transfer_count(cls, target_transaction: MonthsTransaction) -> int:
+        """
+        获取月度交易数据中转账类型的交易数量。
+
+        Args:
+            target_transaction (MonthsTransaction): 月度交易数据对象。
+
+        Returns:
+            int: 月度交易数据中转账类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -133,6 +257,15 @@ class TransactionsTools:
     
     @classmethod
     def get_amounts(cls, target_transaction: MonthsTransaction) -> list:
+        """
+        获取月度交易数据中支出类型交易的金额列表。
+
+        Args:
+            target_transaction (MonthsTransaction): 月度交易数据对象。
+
+        Returns:
+            list: 月度交易数据中支出类型交易的金额列表。
+        """
         
         amounts = []
         for transaction in target_transaction.transactions:
@@ -144,24 +277,60 @@ class TransactionsTools:
     
     @classmethod
     def get_transactions_size(cls, target_transaction: DaysTransaction) -> int:
+        """
+        获取日度交易数据中的交易数量。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            int: 日度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_transactions_size(cls, target_transaction: DaysTransaction) -> int:
+        """
+        获取日度交易数据中的交易数量。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            int: 日度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_transactions_size(cls, target_transaction: DaysTransaction) -> int:
+        """
+        获取日度交易数据中的交易数量。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            int: 日度交易数据中的交易数量。
+        """
         
         return len(target_transaction.transactions)
     
     
     @classmethod
     def get_summary_count(cls, target_transaction: DaysTransaction) -> int:
+        """
+        获取日度交易数据中支出类型的交易数量。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            int: 日度交易数据中支出类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -173,6 +342,15 @@ class TransactionsTools:
     
     @classmethod
     def get_income_count(cls, target_transaction: DaysTransaction) -> int:
+        """
+        获取日度交易数据中收入类型的交易数量。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            int: 日度交易数据中收入类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -184,6 +362,15 @@ class TransactionsTools:
     
     @classmethod
     def get_transfer_count(cls, target_transaction: DaysTransaction) -> int:
+        """
+        获取日度交易数据中转账类型的交易数量。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            int: 日度交易数据中转账类型的交易数量。
+        """
         
         count = 0
         for transaction in target_transaction.transactions:
@@ -195,6 +382,15 @@ class TransactionsTools:
     
     @classmethod
     def get_amounts(cls, target_transaction: DaysTransaction) -> list:
+        """
+        获取日度交易数据中支出类型交易的金额列表。
+
+        Args:
+            target_transaction (DaysTransaction): 日度交易数据对象。
+
+        Returns:
+            list: 日度交易数据中支出类型交易的金额列表。
+        """
         
         amounts = []
         for transaction in target_transaction.transactions:
@@ -206,6 +402,12 @@ class TransactionsTools:
     
     @classmethod
     def show_transactions_in_terminal(cls, transactions: list):
+        """
+        在终端中显示交易数据表格。
+
+        Args:
+            transactions (list): 交易数据列表。
+        """
         
         if len(transactions) <= 0 or transactions is None:
             print_log("No bills.")
@@ -236,13 +438,29 @@ class TransactionsTools:
     
     @classmethod
     def show_transactions_in_window(cls, transactions: list):
+        """
+        在窗口中显示交易数据。
+
+        Args:
+            transactions (list): 交易数据列表。
+        """
         
         cls.show_transactions_in_terminal(transactions=transactions)
         reversed(transactions)
-        ShowTransaction.show_transactions(transactions=transactions)
+        show_transactions(transactions=transactions)
       
     @classmethod
     def filter_transactions_simple(cls, transactions: list, type_word: list) -> list:
+        """
+        简单过滤交易数据，根据交易分类类型过滤。
+
+        Args:
+            transactions (list): 交易数据列表。
+            type_word (list): 需要过滤的交易分类类型列表。
+
+        Returns:
+            list: 过滤后的交易数据列表。
+        """
         
         target_transaction = []
         for transaction in transactions:
@@ -253,6 +471,16 @@ class TransactionsTools:
     
     @classmethod
     def filter_transactions(cls, transactions: list, rules: list) -> list:
+        """
+        根据过滤规则过滤交易数据。
+
+        Args:
+            transactions (list): 交易数据列表。
+            rules (list): 过滤规则列表。
+
+        Returns:
+            list: 过滤后的交易数据列表。
+        """
         
         target_transaction = []
         for transaction in transactions:

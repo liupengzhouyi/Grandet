@@ -10,14 +10,27 @@ from modules.transaction import DaysTransaction
 
 
 class ExtractTransactions:
+    """
+    用于从全局存储的年度交易数据中提取特定时间段的交易数据的辅助类。
+    """
     
     
     def __init__(self) -> None:
+        """
+        初始化一个 ExtractTransactions 对象。
+        """
+        
         pass
     
     
     @classmethod
     def extract_all(cls) -> list:
+        """
+        提取所有年度交易数据中的交易对象，并返回一个列表。
+
+        Returns:
+            list: 所有年度交易数据中的交易对象列表。
+        """
         
         all_transactions = []
         every_years_transactions = get_value("every_years_transactions")
@@ -33,6 +46,15 @@ class ExtractTransactions:
     
     @classmethod
     def extract_by_year(cls, year: int) -> list:
+        """
+        提取特定年份的交易数据，并返回一个列表。
+
+        Args:
+            year (int): 要提取的年份。
+
+        Returns:
+            list: 特定年份的交易数据列表。
+        """
         
         all_transactions = []
         every_years_transactions = get_value("every_years_transactions")
@@ -49,6 +71,16 @@ class ExtractTransactions:
     
     @classmethod
     def extract_by_year_month(cls, year: int, month: int) -> list:
+        """
+        提取特定年份和月份的交易数据，并返回一个列表。
+
+        Args:
+            year (int): 要提取的年份。
+            month (int): 要提取的月份。
+
+        Returns:
+            list: 特定年份和月份的交易数据列表。
+        """
         
         print(f"extract_by_year:{str(year)}-month:{str(month)}.")
         all_transactions = []
@@ -82,6 +114,17 @@ class ExtractTransactions:
     
     @classmethod
     def extract_by_year_month_day(cls, year: int, month: int, day: int) -> list:
+        """
+        提取特定年份、月份和日期的交易数据，并返回一个列表。
+
+        Args:
+            year (int): 要提取的年份。
+            month (int): 要提取的月份。
+            day (int): 要提取的日期。
+
+        Returns:
+            list: 特定年份、月份和日期的交易数据列表。
+        """
         
         all_transactions = []
         every_years_transactions = get_value("every_years_transactions")

@@ -16,7 +16,7 @@ import matplotlib.cm as cm
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 from tools.analysis_transactions import AnalysisTransactions
-from gui.ui.show_transactions_as_table import ShowTransaction
+from gui.ui.show_transactions_as_table import genaertion_table
 
 
 def get_frequency_data(transactions: list):
@@ -319,7 +319,7 @@ def show_detail_page(transactions: list, window_title: str="详情窗口", image
     yscrollbar.pack(side=tk.RIGHT,fill=tk.Y)
     yscrollbar.config(command=tree.yview)
     tree.configure(yscrollcommand=yscrollbar.set)
-    tree = ShowTransaction.genaertion_table(tree=tree, transactions=transactions)
+    tree = genaertion_table(tree=tree, transactions=transactions)
     tree.pack()
     # 右侧添加分界线
     ttk.Separator(right_panel, orient="horizontal").pack(fill="x")

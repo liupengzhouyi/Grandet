@@ -8,7 +8,7 @@ class SplitTransaction:
     
     def __init__(self):
         
-        print
+        print()
         
         
     @classmethod

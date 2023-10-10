@@ -4,8 +4,8 @@
 from modules.transaction import Transaction
 from modules.transaction import YearsTransaction
 from modules.transactions_tools import TransactionsTools
-
 from functions.log4py import print_log
+
 
 class AnalysisTransactions:
     
@@ -18,10 +18,22 @@ class AnalysisTransactions:
     
     
     def get_size(self) -> int:
+        """get size
+
+        Returns:
+            int: _description_
+        """
+        
         return len(self.transactions)
     
     
     def get_years(self) -> list:
+        """_summary_
+
+        Returns:
+            list: _description_
+        """
+        
         years = []
         for transaction in self.transactions:
             year = transaction.get_datetime().year
@@ -31,6 +43,10 @@ class AnalysisTransactions:
     
     
     def get_months(self, target_year: int) -> list:
+        '''
+        获取某一年的所有月份
+        '''
+        
         months = []
         for transaction in self.transactions:
             year = transaction.get_datetime().year
