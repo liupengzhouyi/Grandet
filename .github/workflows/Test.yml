@@ -24,7 +24,7 @@ jobs:
 
     - name: Install Dependencies
       # Install Dependencies
-      run: pip3 install pandas
+      run: pip3 install pandas;pip3 install tabulate
 
     - name: Python Unit Test
       # Build your program with the given configuration
