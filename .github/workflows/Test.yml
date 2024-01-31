@@ -1,4 +1,4 @@
-name: Google Unit Test
+name: Python Unit Test
 
 on:
   push:
@@ -10,27 +10,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Build Google Test Frmra
-      # Build your program with the given configuration
-      run: ls -l;
-      
-    - name: Build Google Test Frmra
-      # Build your program with the given configuration
-      run: echo ${{github.workspace}};
-
-    - name: Build Project
-      # Build your program with the given configuration
-      run: info=$(python3 --version);echo "${info}"
-
-    - name: Build Google Test
-      # Build your program with the given configuration
-      run: cd ${{github.workspace}};
-
-    - name: Running
+    - name: Python Unit Test
       # Build your program with the given configuration
       run: cd ${{github.workspace}};python -m unittest discover -s ./test -p 'test_*.py' --verbose
       
