@@ -30,6 +30,3 @@ class TestCalculator(unittest.TestCase):
     def test_subtract4(self):
         result = Calculator.subtract(5, 3)
         self.assertEqual(result, 2)
-
-# if __name__ == '__main__':
-#     unittest.main()
