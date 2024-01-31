@@ -3,7 +3,6 @@ import unittest
 from functions.read_table import ReadTransactionTable
 
 
-# test
 class TestReadTransactionTable(unittest.TestCase):
     
     def test_extract_csv_file_path(self):
@@ -32,3 +31,27 @@ class TestReadTransactionTable(unittest.TestCase):
         csv_file_path = "./test/source/wechat_bill.csv"
         info = ReadTransactionTable().alipay_or_wechat(csv_file_path)
         self.assertEqual(info, 'wechat')
+        
+    def test_read_csv_head(self):
+        
+        csv_file_path = "./test/source/alipay_bills.csv"
+        head = ReadTransactionTable().read_csv_head(csv_file_path=csv_file_path,
+                                                    frist_line_word="交易时间")
+        self.assertEqual(len(head), 13)
+        
+    def test_open_csv_head_wechat(self):
+        
+        csv_file_path = "./test/source/wechat_bill.csv"
+        # The key word in the first line
+        frist_line_word = "交易时间"
+        result = ReadTransactionTable.open_csv(csv_file_path=csv_file_path, head=False, frist_line_word=frist_line_word)
+        self.assertEqual(len(result), 4)
+        
+    def test_open_csv_head_alipay(self):
+        
+        csv_file_path = "./test/source/alipay_bills.csv"
+        # The key word in the first line
+        frist_line_word = "交易时间"
+        result = ReadTransactionTable.open_csv(csv_file_path=csv_file_path, head=False, frist_line_word=frist_line_word)
+        self.assertEqual(len(result), 5)
+        # Add more assertions for the extracted transactions
