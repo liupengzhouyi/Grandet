@@ -19,8 +19,12 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Copy Code To Test DIR
-      # Build your program with the given configuration
+      # Copy code.
       run: cp -r ${{github.workspace}}/src/* ${{github.workspace}}/test
+
+    - name: Install Dependencies
+      # Install Dependencies
+      run: pip3 install pandas
 
     - name: Python Unit Test
       # Build your program with the given configuration
