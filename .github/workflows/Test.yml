@@ -20,7 +20,7 @@ jobs:
 
     - name: Copy Code To Test DIR
       # Build your program with the given configuration
-      run: cp ${{github.workspace}}/src/* ${{github.workspace}}/test
+      run: cp -r ${{github.workspace}}/src/* ${{github.workspace}}/test
 
     - name: Python Unit Test
       # Build your program with the given configuration
